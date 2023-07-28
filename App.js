@@ -1,20 +1,43 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  ImageBackground,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import React, { useState } from "react";
+import LoginScreen from './src/Screens/LoginScreen';
+import RegistrationScreen from './src/Screens/RegistrationScreen';
+
+const backgroundImage = require("./src/Source/Photo_BG.png");
 
 export default function App() {
+
+  const [activeScreen, setActiveScreen] = useState(0);
+  const changeScreenFunction = value => {setActiveScreen(value)};
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.mainContainer}>
+        <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+          {activeScreen === 0 ? <LoginScreen changeScreen={changeScreenFunction} /> : <RegistrationScreen changeScreen={changeScreenFunction} />}
+        </ImageBackground>
+        <StatusBar style="auto" />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "flex-end",
+    width: '100%',
   },
 });

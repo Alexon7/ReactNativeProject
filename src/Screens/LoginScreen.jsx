@@ -13,6 +13,7 @@ const LoginScreen = ({ changeScreen }) => {
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
+  const [isTextFocused, setIsTextFocused] = useState('');
 
     const handleMail = text => {
         setMail(text)
@@ -38,18 +39,29 @@ const LoginScreen = ({ changeScreen }) => {
         <View style={styles.container}>
           <Text style={styles.title}>Увійти</Text>
           <TextInput
-            style={styles.inputMail}
+            style={[
+    styles.inputText,
+    isTextFocused ? styles.inputTextFocused : null,
+  ]}
+
             placeholder="Адреса електронної пошти"
             inputMode="email"
             value={mail}
             onChangeText={handleMail}
+            onFocus={() => setIsTextFocused(true)}
+           onBlur={() => setIsTextFocused(false)}
           />
           <TextInput
-            style={styles.inputPassword}
-            placeholder="••••••••••••"
+            style={[
+    styles.inputText,
+    isTextFocused ? styles.inputTextFocused : null,
+  ]}
+            placeholder="Пароль"
             secureTextEntry={hidePassword}
             value={password}
             onChangeText={handlePassword}
+            onFocus={() => setIsTextFocused(true)}
+           onBlur={() => setIsTextFocused(false)}
           />
           <TouchableOpacity
             style={styles.showPassword}
@@ -108,8 +120,8 @@ const styles = StyleSheet.create({
     marginTop: 32,
     color: "#212121",
   },
-  inputMail: {
-    backgroundColor: "#F6F6F6",
+  inputText: {
+     backgroundColor: "#F6F6F6",
     width: 343,
     height: 50,
     borderRadius: 8,
@@ -120,18 +132,34 @@ const styles = StyleSheet.create({
     fontSize: 16,
     position: "relative",
   },
-  inputPassword: {
-    backgroundColor: "#F6F6F6",
-    width: 343,
-    height: 50,
-    borderRadius: 8,
-    padding: 16,
-    marginTop: 16,
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 16,
-    position: "relative",
+  inputTextFocused: {
+     backgroundColor: "#fff",
+    borderColor: "#FF6C00",
   },
+  // inputMail: {
+  //   backgroundColor: "#F6F6F6",
+  //   width: 343,
+  //   height: 50,
+  //   borderRadius: 8,
+  //   padding: 16,
+  //   marginTop: 16,
+  //   fontStyle: "normal",
+  //   fontWeight: "400",
+  //   fontSize: 16,
+  //   position: "relative",
+  // },
+  // inputPassword: {
+  //   backgroundColor: "#F6F6F6",
+  //   width: 343,
+  //   height: 50,
+  //   borderRadius: 8,
+  //   padding: 16,
+  //   marginTop: 16,
+  //   fontStyle: "normal",
+  //   fontWeight: "400",
+  //   fontSize: 16,
+  //   position: "relative",
+  // },
   showPasswordText: {
     fontStyle: "normal",
     fontWeight: "400",

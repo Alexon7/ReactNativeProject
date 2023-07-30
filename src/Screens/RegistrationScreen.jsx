@@ -16,6 +16,8 @@ const RegistrationScreen = ({ changeScreen }) => {
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
+  const [isLoginFocused, setIsLoginFocused] = useState(false);
+const [isTextFocused, setIsTextFocused] = useState(false);
 
     const handleLogin = text => {
         setLogin(text)
@@ -50,25 +52,40 @@ const RegistrationScreen = ({ changeScreen }) => {
           </View>
           <Text style={styles.title}>Реєстрація</Text>
           <TextInput
-            style={styles.inputLogin}
+            style={[
+          styles.inputLogin,
+          isLoginFocused && styles.activeInput,
+        ]}
             placeholder="Логін"
             inputMode="text"
             value={login}
             onChangeText={handleLogin}
+            onFocus={() => setIsLoginFocused(true)}
+           onBlur={() => setIsLoginFocused(false)}
           />
           <TextInput
-            style={styles.inputMail}
+            style={[
+          styles.inputText,
+          isTextFocused && styles.activeInput,
+        ]}
             placeholder="Адреса електронної пошти"
             inputMode="email"
             value={mail}
             onChangeText={handleMail}
+            onFocus={() => setIsTextFocused(true)}
+           onBlur={() => setIsTextFocused(false)}
           />
           <TextInput
-            style={styles.inputPassword}
+            style={[
+          styles.inputText,
+          isTextFocused && styles.activeInput,
+        ]}
             placeholder="Пароль"
             secureTextEntry={hidePassword}
             value={password}
             onChangeText={handlePassword}
+             onFocus={() => setIsTextFocused(true)}
+           onBlur={() => setIsTextFocused(false)}
           />
           <TouchableOpacity
             style={styles.showPassword}
@@ -144,7 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
   },
-  inputMail: {
+  inputText: {
     backgroundColor: "#F6F6F6",
     width: 343,
     height: 50,
@@ -156,18 +173,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     position: "relative",
   },
-  inputPassword: {
-    backgroundColor: "#F6F6F6",
-    width: 343,
-    height: 50,
-    borderRadius: 8,
-    padding: 16,
-    marginTop: 16,
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 16,
-    position: "relative",
+
+    activeInput: {
+    backgroundColor: "#fff",
+    borderColor: "#FF6C00",
   },
+  // inputPassword: {
+  //   backgroundColor: "#F6F6F6",
+  //   width: 343,
+  //   height: 50,
+  //   borderRadius: 8,
+  //   padding: 16,
+  //   marginTop: 16,
+  //   fontStyle: "normal",
+  //   fontWeight: "400",
+  //   fontSize: 16,
+  //   position: "relative",
+  // },
   showPasswordText: {
     fontStyle: "normal",
     fontWeight: "400",

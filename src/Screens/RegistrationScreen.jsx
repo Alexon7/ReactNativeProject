@@ -16,8 +16,7 @@ const RegistrationScreen = ({ changeScreen }) => {
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
-  const [isLoginFocused, setIsLoginFocused] = useState(false);
-const [isTextFocused, setIsTextFocused] = useState(false);
+const [isFocused, setIsFocused] = useState("");
 
     const handleLogin = text => {
         setLogin(text)
@@ -54,38 +53,50 @@ const [isTextFocused, setIsTextFocused] = useState(false);
           <TextInput
             style={[
           styles.inputLogin,
-          isLoginFocused && styles.activeInput,
+          isFocused === "Login" && styles.activeInput,
         ]}
             placeholder="Логін"
             inputMode="text"
             value={login}
             onChangeText={handleLogin}
-            onFocus={() => setIsLoginFocused(true)}
-           onBlur={() => setIsLoginFocused(false)}
+           onFocus={() => {
+                  setIsFocused("Login");
+                }}
+                onBlur={() => {
+                  setIsFocused("");
+                }}
           />
           <TextInput
             style={[
           styles.inputText,
-          isTextFocused && styles.activeInput,
+          isFocused === "Email" && styles.activeInput,
         ]}
             placeholder="Адреса електронної пошти"
             inputMode="email"
             value={mail}
             onChangeText={handleMail}
-            onFocus={() => setIsTextFocused(true)}
-           onBlur={() => setIsTextFocused(false)}
+           onFocus={() => {
+                  setIsFocused("Email");
+                }}
+                onBlur={() => {
+                  setIsFocused("");
+                }}
           />
           <TextInput
             style={[
           styles.inputText,
-          isTextFocused && styles.activeInput,
+          isFocused === "Password" && styles.activeInput,
         ]}
             placeholder="Пароль"
             secureTextEntry={hidePassword}
             value={password}
             onChangeText={handlePassword}
-             onFocus={() => setIsTextFocused(true)}
-           onBlur={() => setIsTextFocused(false)}
+             onFocus={() => {
+                    setIsFocused("Password");
+                  }}
+                  onBlur={() => {
+                    setIsFocused("");
+                  }}
           />
           <TouchableOpacity
             style={styles.showPassword}
@@ -160,6 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 19,
+    
   },
   inputText: {
     backgroundColor: "#F6F6F6",
@@ -172,29 +184,22 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     position: "relative",
+    
   },
 
     activeInput: {
     backgroundColor: "#fff",
-    borderColor: "#FF6C00",
+      borderColor: "#FF6C00",
+     borderWidth: 1,
   },
-  // inputPassword: {
-  //   backgroundColor: "#F6F6F6",
-  //   width: 343,
-  //   height: 50,
-  //   borderRadius: 8,
-  //   padding: 16,
-  //   marginTop: 16,
-  //   fontStyle: "normal",
-  //   fontWeight: "400",
-  //   fontSize: 16,
-  //   position: "relative",
-  // },
+  
   showPasswordText: {
     fontStyle: "normal",
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 19,
+    paddingRight:16,
+   
        
   },
   showPassword: {

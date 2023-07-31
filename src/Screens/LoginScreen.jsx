@@ -13,7 +13,7 @@ const LoginScreen = ({ changeScreen }) => {
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
-  const [isTextFocused, setIsTextFocused] = useState('');
+  const [isFocused, setIsFocused] = useState("");
 
     const handleMail = text => {
         setMail(text)
@@ -41,27 +41,33 @@ const LoginScreen = ({ changeScreen }) => {
           <TextInput
             style={[
     styles.inputText,
-    isTextFocused ? styles.inputTextFocused : null,
-  ]}
+    isFocused === "Email" && styles.inputTextFocused]}
 
             placeholder="Адреса електронної пошти"
             inputMode="email"
             value={mail}
             onChangeText={handleMail}
-            onFocus={() => setIsTextFocused(true)}
-           onBlur={() => setIsTextFocused(false)}
+            onFocus={() => {
+                  setIsFocused("Email");
+                }}
+                onBlur={() => {
+                  setIsFocused("");
+                }}
           />
           <TextInput
             style={[
     styles.inputText,
-    isTextFocused ? styles.inputTextFocused : null,
-  ]}
+    isFocused === "Password" && styles.inputTextFocused ]}
             placeholder="Пароль"
             secureTextEntry={hidePassword}
             value={password}
             onChangeText={handlePassword}
-            onFocus={() => setIsTextFocused(true)}
-           onBlur={() => setIsTextFocused(false)}
+             onFocus={() => {
+                    setIsFocused("Password");
+                  }}
+                  onBlur={() => {
+                    setIsFocused("");
+                  }}
           />
           <TouchableOpacity
             style={styles.showPassword}
@@ -103,6 +109,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     width: "100%",
+    paddingTop: 32,
+    paddingBottom: 132,
+    paddingHorizontal: 16,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
@@ -135,36 +144,16 @@ const styles = StyleSheet.create({
   inputTextFocused: {
      backgroundColor: "#fff",
     borderColor: "#FF6C00",
+     borderWidth: 1,
   },
-  // inputMail: {
-  //   backgroundColor: "#F6F6F6",
-  //   width: 343,
-  //   height: 50,
-  //   borderRadius: 8,
-  //   padding: 16,
-  //   marginTop: 16,
-  //   fontStyle: "normal",
-  //   fontWeight: "400",
-  //   fontSize: 16,
-  //   position: "relative",
-  // },
-  // inputPassword: {
-  //   backgroundColor: "#F6F6F6",
-  //   width: 343,
-  //   height: 50,
-  //   borderRadius: 8,
-  //   padding: 16,
-  //   marginTop: 16,
-  //   fontStyle: "normal",
-  //   fontWeight: "400",
-  //   fontSize: 16,
-  //   position: "relative",
-  // },
+  
   showPasswordText: {
     fontStyle: "normal",
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 19,
+    right: 16,
+    
   },
   showPassword: {
     top: -34,

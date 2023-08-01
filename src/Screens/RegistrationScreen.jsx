@@ -52,7 +52,7 @@ const [isFocused, setIsFocused] = useState("");
           <Text style={styles.title}>Реєстрація</Text>
           <TextInput
             style={[
-          styles.inputLogin,
+          styles. inputText,
           isFocused === "Login" && styles.activeInput,
         ]}
             placeholder="Логін"
@@ -137,7 +137,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
+    borderTopLeftRadius: 25,   
+    paddingHorizontal: 16,
+    position: "absolute",
+    
   },
   photoContainer: {
     marginTop: -60,
@@ -160,33 +163,23 @@ const styles = StyleSheet.create({
     marginTop: 32,
     color: "#212121",
   },
-  inputLogin: {
-    backgroundColor: "#F6F6F6",
-    width: 343,
-    height: 50,
-    borderRadius: 8,
-    marginTop: 33,
-    padding: 16,
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 16,
-    lineHeight: 19,
-    
-  },
+ 
   inputText: {
     backgroundColor: "#F6F6F6",
-    width: 343,
+    width: "100%",
     height: 50,
     borderRadius: 8,
-    padding: 16,
+    paddingBottom: 15,
+    paddingTop: 16,
+    paddingHorizontal: 16,
     marginTop: 16,
     fontStyle: "normal",
     fontWeight: "400",
     fontSize: 16,
     position: "relative",
-    
-  },
+     },
 
+  
     activeInput: {
     backgroundColor: "#fff",
       borderColor: "#FF6C00",
@@ -209,7 +202,9 @@ const styles = StyleSheet.create({
   registerButton: {
     backgroundColor: "#FF6C00",
     height: 50,
-    width: 343,
+    width: "100%",
+     paddingHorizontal: 32,
+    paddingVertical: 16,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,

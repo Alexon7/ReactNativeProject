@@ -41,6 +41,7 @@ const LoginScreen = ({ changeScreen }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.containerKeyBoard}
+        keyboardVerticalOffset={-70}
       >
         <View style={styles.container}>
           <Text style={styles.title}>Увійти</Text>
@@ -109,7 +110,7 @@ const LoginScreen = ({ changeScreen }) => {
 
 const styles = StyleSheet.create({
   containerKeyBoard: {
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
   },
   container: {
     backgroundColor: "#FFFFFF",
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 30,
     lineHeight: 35,
-    marginTop: 32,
+    marginBottom: 16,
     color: "#212121",
   },
   inputText: {
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 19,
-    right: 16,
+    // right: 16,
     
   },
   showPassword: {
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   },
   loginLink: {
     marginTop: 16,
-    marginBottom: 66,
+    // marginBottom: 66,
   },
   loginLinkText: {
     fontStyle: "normal",

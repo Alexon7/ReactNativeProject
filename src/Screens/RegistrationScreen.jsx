@@ -62,6 +62,7 @@ const RegistrationScreen = ({ changeScreen }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.containerKeyBoard}
+        keyboardVerticalOffset={-120}
       >
         <View style={styles.container}>
           <View style={styles.photoContainer}>
@@ -150,7 +151,7 @@ const RegistrationScreen = ({ changeScreen }) => {
 
 const styles = StyleSheet.create({
   containerKeyBoard: {
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
   },
   container: {
     backgroundColor: "#FFFFFF",
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,   
     paddingHorizontal: 16,
-    position: "absolute",
+    // position: "absolute",
     
   },
   photoContainer: {

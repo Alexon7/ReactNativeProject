@@ -16,7 +16,10 @@ const RegistrationScreen = ({ changeScreen }) => {
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
-const [isFocused, setIsFocused] = useState("");
+  const [isFocused, setIsFocused] = useState("");
+  
+  const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     const handleLogin = text => {
         setLogin(text)
@@ -28,14 +31,31 @@ const [isFocused, setIsFocused] = useState("");
 
     const handlePassword = text => {
         setPassword(text)
-    };
+  };
+  
+  const resetForm = () => {
+    setLogin('');
+    setMail('');
+    setPassword('');
+  };
 
     const register = () => {
         if (!login || !mail || !password) {
             alert("Please fill in all fields");
             return
-        }
-        console.log(`Login: ${login}, Email: ${mail}, Password: ${password}`);
+      }
+      
+       if (!emailPattern.test(mail)) {
+      alert("Invalid email format");
+      return;
+    }
+
+    if (!passwordPattern.test(password)) {
+      alert("Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character");
+      return;
+    }
+      console.log(`Login: ${login}, Email: ${mail}, Password: ${password}`);
+       resetForm();
     }
 
     return (

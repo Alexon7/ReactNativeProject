@@ -21,14 +21,20 @@ const LoginScreen = ({ changeScreen }) => {
 
     const handlePassword = text => {
         setPassword(text)
-    };
+  };
+  
+  const resetForm = () => {
+    setMail('');
+    setPassword('');
+  };
 
     const login = () => {
         if (!mail || !password) {
             alert("Please fill in all fields");
             return
         };
-        console.log(`Email: ${mail}, Password: ${password}`);
+      console.log(`Email: ${mail}, Password: ${password}`);
+       resetForm();
     };
 
     return (

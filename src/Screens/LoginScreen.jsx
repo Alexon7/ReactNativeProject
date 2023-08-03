@@ -36,6 +36,7 @@ const LoginScreen = ({ changeScreen }) => {
             return
         };
       console.log(`Email: ${mail}, Password: ${password}`);
+      navigation.navigate('Home');
        resetForm();
     };
 

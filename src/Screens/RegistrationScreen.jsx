@@ -57,6 +57,7 @@ const RegistrationScreen = ({ changeScreen }) => {
       return;
     }
       console.log(`Login: ${login}, Email: ${mail}, Password: ${password}`);
+      navigation.navigate('Home');
        resetForm();
     }
 

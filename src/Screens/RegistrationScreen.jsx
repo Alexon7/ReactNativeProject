@@ -7,6 +7,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableWithoutFeedback,
+   Keyboard,
 } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons"; 
@@ -58,7 +60,8 @@ const RegistrationScreen = ({ changeScreen }) => {
        resetForm();
     }
 
-    return (
+  return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.containerKeyBoard}
@@ -146,6 +149,7 @@ const RegistrationScreen = ({ changeScreen }) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
 };
 

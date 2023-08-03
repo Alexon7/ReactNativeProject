@@ -3,9 +3,7 @@ import {
   StyleSheet,
   ImageBackground,
   View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+  } from "react-native";
 import React, { useState } from "react";
 import LoginScreen from './src/Screens/LoginScreen';
 import RegistrationScreen from './src/Screens/RegistrationScreen';
@@ -18,14 +16,14 @@ export default function App() {
   const changeScreenFunction = value => {setActiveScreen(value)};
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+   
       <View style={styles.mainContainer}>
         <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
           {activeScreen === 0 ? <LoginScreen changeScreen={changeScreenFunction} /> : <RegistrationScreen changeScreen={changeScreenFunction} />}
         </ImageBackground>
         <StatusBar style="auto" />
       </View>
-    </TouchableWithoutFeedback>
+    
   );
 }
 

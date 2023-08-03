@@ -6,6 +6,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableWithoutFeedback,
+   Keyboard,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -37,7 +39,8 @@ const LoginScreen = ({ changeScreen }) => {
        resetForm();
     };
 
-    return (
+  return (
+       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.containerKeyBoard}
@@ -105,6 +108,7 @@ const LoginScreen = ({ changeScreen }) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
     );
 };
 

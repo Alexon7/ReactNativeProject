@@ -12,8 +12,11 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons"; 
+import { StatusBar  } from 'expo-status-bar';
 
-const RegistrationScreen = ({ changeScreen }) => {
+const backImage = require("../Source/Photo_BG.png");
+
+const RegistrationScreen = ({ navigation }) => {
     const [login, setLogin] = useState('');
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,7 +65,9 @@ const RegistrationScreen = ({ changeScreen }) => {
     }
 
   return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.maincontainer}>
+        <ImageBackground source={backImage} style={styles.backImg}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.containerKeyBoard}
@@ -144,17 +149,30 @@ const RegistrationScreen = ({ changeScreen }) => {
           <TouchableOpacity
             style={styles.loginLink}
             activeOpacity={0.5}
-            onPress={() => changeScreen(0)}
+            onPress={() => navigation.navigate("Login")}
           >
             <Text style={styles.loginLinkText}>Вже є акаунт? Увійти</Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+        <StatusBar style="auto" />  
+            </View>
       </TouchableWithoutFeedback>
     );
 };
 
 const styles = StyleSheet.create({
+ maincontainer: {
+    flex: 1,
+    alignItems: 'center',
+  }, 
+  backImg: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%'
+  },
+
   containerKeyBoard: {
     // justifyContent: "flex-end",
   },

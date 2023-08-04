@@ -108,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.loginLink}
             activeOpacity={0.5}
-            onPress={() => changeScreen(1)}
+            onPress={() => navigation.navigate("Registratione")}
           >
             <Text style={styles.loginLinkText}>
               Немає акаунту? Зареєструватися

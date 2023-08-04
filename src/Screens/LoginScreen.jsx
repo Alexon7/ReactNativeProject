@@ -7,9 +7,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
-   Keyboard,
+  Keyboard,
+   ImageBackground
 } from "react-native";
+import { StatusBar  } from 'expo-status-bar';
 import React, { useState } from "react";
+
+const backImage = require("../Source/Photo_BG.png");
 
 const LoginScreen = ({ navigation }) => {
     const [mail, setMail] = useState('');
@@ -41,7 +45,10 @@ const LoginScreen = ({ navigation }) => {
     };
 
   return (
-       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+     <View style={styles.maincontainer}>
+        <ImageBackground source={backImage} style={styles.backImg}>
+      
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.containerKeyBoard}
@@ -108,12 +115,24 @@ const LoginScreen = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+         <StatusBar style="auto" />  
+            </View>
+      </TouchableWithoutFeedback>
     );
 };
 
 const styles = StyleSheet.create({
+   maincontainer: {
+    flex: 1,
+    alignItems: 'center',
+  }, 
+  backImg: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%'
+  },
   containerKeyBoard: {
     // justifyContent: "flex-end",
   },
@@ -166,7 +185,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 19,
-    // right: 16,
+  
     
   },
   showPassword: {

@@ -1,24 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import {
-  StyleSheet,
-  ImageBackground,
-  View,
-  } from "react-native";
+// import { StatusBar } from 'expo-status-bar';
+// import {
+//   StyleSheet,
+//   ImageBackground,
+//   View,
+//   } from "react-native";
 import React, { useState } from "react";
-import LoginScreen from './src/Screens/LoginScreen';
-import RegistrationScreen from './src/Screens/RegistrationScreen';
+// import LoginScreen from './src/Screens/LoginScreen';
+// import RegistrationScreen from './src/Screens/RegistrationScreen';
 import Navigation from './src/Navigation/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
 
 
 
 
-const backgroundImage = require("./src/Source/Photo_BG.png");
+
 
 export default function App() {
 
-  const [activeScreen, setActiveScreen] = useState(0);
-  const changeScreenFunction = value => {setActiveScreen(value)};
+  // const [activeScreen, setActiveScreen] = useState(0);
+  // const changeScreenFunction = value => {setActiveScreen(value)};
 
   return (
      <NavigationContainer>

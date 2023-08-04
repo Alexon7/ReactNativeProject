@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-const LoginScreen = ({ changeScreen }) => {
+const LoginScreen = ({ navigation }) => {
     const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
@@ -36,7 +36,7 @@ const LoginScreen = ({ changeScreen }) => {
             return
         };
       console.log(`Email: ${mail}, Password: ${password}`);
-      navigation.navigate('Home');
+       navigation.navigate('Home', { screen: 'PostsScreen' });
        resetForm();
     };
 

@@ -13,7 +13,7 @@ function PostsScreen({navigation}) {
         <ScrollView>
           <ProfileElement avatar= { avatar } name="Natali Romanova" email="email@example.com" />
           { data.map (el => 
-            <Post key={ el.id } img = { postImg } text={ el.name } message = { 0 } location={ el.location }/>      
+            <Post key={ el.id } img = { postImg } text={ el.name } msgs = { 0 } location={ el.location }/>      
           )}
         </ScrollView>
       </SafeAreaView>

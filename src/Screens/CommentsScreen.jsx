@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-const CommentsScreen = () => {
+const CommentsScreen = ({navigation}) => {
 	return (
 		<View>
 			<Text>CommentsScreen</Text>

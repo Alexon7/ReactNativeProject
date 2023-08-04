@@ -1,18 +1,18 @@
 const data = [{
     id:"1",
-    name:"Victory",
-    location:"Alberta, Canada"
+    name:"Ліс",
+    location:"Ivano-Frankivs'k Region, Ukraine"
 },
 {
     id: "2",
-    name:"Choija",
-    location:"Italy"
+    name:"Захід на Чорному морі",
+    location:"Ukraine"
    
 },
 {
     id: "3",
-     name:"Birthday party",
-    location:"USA"
+     name:"Старий будиночок у Венеції",
+    location:"Italy"
     
 }];
 

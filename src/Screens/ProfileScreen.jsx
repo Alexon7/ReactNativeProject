@@ -1,14 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList, ScrollView } from "react-native";
 import React from "react";
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-const backImage = require('../../Source/Photo_BG.png');
-const buttonImg = require('../../Source/add.png');
-const profilePhoto = require('../../Source/Ava.png');
+const backImage = require('../Source/Photo_BG.png');
+const buttonImg = require('../Source/add.png');
+const profilePhoto = require('../Source/Ava.png');
 
-const postImg = require('../../Source/View.png');
-import data from '../../Source/posts'
-import Post from "../../Components/Post";
+const postImg = require('../Source/View.png');
+import data from '../Source/posts'
+import Post from "../Components/Post";
 
 const BottomTabsProf = createBottomTabNavigator(); 
 
@@ -16,7 +16,8 @@ function ProfileScreen({navigation}) {
     return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-       <ImageBackground source={backImage} style={styles.backImg}> 
+        <ImageBackground source={backImage} style={styles.backImg}> 
+          <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={ styles.container }>
                <View style={ styles.pfotoContainer }>
@@ -25,7 +26,7 @@ function ProfileScreen({navigation}) {
                    <ImageBackground source={buttonImg} style={{width: '100%', height: '100%'}}></ImageBackground>
                  </TouchableOpacity>
                </View>
-                 <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })}>
+                 <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Login', { screen: 'LoginScreen' })}>
                    <Feather name="log-out" size={24} color="gray" />
                  </TouchableOpacity>
               <Text style={styles.title}>Natali Romanova</Text> 
@@ -41,7 +42,8 @@ function ProfileScreen({navigation}) {
             <Post key={ el.id } img = { postImg } text={ el.name } msgs = { 0 } location={ el.location }/>      
             )} */}
             </View>  
-        </View>
+            </View>
+            </ScrollView>
        </ImageBackground>
       {/* </ScrollView> */}
     </SafeAreaView>

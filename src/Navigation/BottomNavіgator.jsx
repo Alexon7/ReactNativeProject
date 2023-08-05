@@ -2,9 +2,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React from "react";
 import { AntDesign, SimpleLineIcons, Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CreatePostsScreen from "../Screens/CreatePostsScreen/CreatePostsScreen";
+import CreatePostsScreen from "../Screens/CreatePostsScreen";
 import PostsScreen from "../Screens/PostsScreen";
-import ProfileScreen from "../Screens/ProfileScreen/ProfileScreen";
+import ProfileScreen from "../Screens/ProfileScreen";
 
 
 const BottomTabs = createBottomTabNavigator(); 
@@ -21,33 +21,25 @@ const Home = ({ navigation }) => {
                 <BottomTabs.Screen 
                    options={{
                    tabBarIcon: ({focused,size, color}) =>{
-                       return <SimpleLineIcons name="grid" size={20} color={focused ? '#ffffff' : color}
-                       style={{
-                        backgroundColor: focused ? '#FF6C00' : 'transparent', 
-                       borderRadius: 20, 
-                        padding:10,
-                         width: 70,
-                      height: 40,
-                      textAlign: 'center',
-                    }}
-                       />
+                       return <SimpleLineIcons name="grid" size={20} color={focused ? '#FF6C00' : color}
+                                              />
                    },
                    headerTitleAlign:"center",
                    headerRightContainerStyle: { paddingRight: 20 },
                    headerRight: () => (
-                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Login')} >
+                    <View style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Login')} >
                        <Feather name="log-out" size={24} color="gray" />
-                    </TouchableOpacity>)
+                    </View>)
                 }} name='Публікації' component={PostsScreen}/>
 
                 {/* ADD BUTTON */}
                 <BottomTabs.Screen  options={{
                    tabBarIcon: ({ focused }) => {
                    return <TouchableOpacity style={ [
-                        styles.addButton,{backgroundColor: focused ? '#FF6C00' : 'transparent'}
+                        styles.addButton
                    ]}
                      activeOpacity={0.5} onPress={() => navigation.navigate('CreatePostsScreen')}>
-                    <Text style={ [styles.addButtonText, { color: focused ? "#ffffff" : "#212121" }]}>+</Text>
+                    <Text style={styles.addButtonText}>+</Text>
                     </TouchableOpacity>
                    },
                    headerShown: false,
@@ -58,16 +50,8 @@ const Home = ({ navigation }) => {
                 {/* PROFILE BUTTON */}
                 <BottomTabs.Screen options={{
                    tabBarIcon: ({focused,size, color}) =>{
-                    return <AntDesign name="user" size={20} color={focused ? '#ffffff' : color}
-                    style={{
-                        backgroundColor: focused ? '#FF6C00' : 'transparent', 
-                      borderRadius: 20, 
-                        padding:10,
-                         width: 70,
-                      height: 40,
-                      textAlign: 'center',
-                                                                  
-                    }} />
+                    return <AntDesign name="user" size={20} color={focused ? '#FF6C00' : color}
+                     />
                    },
                    headerShown: false,
                 }} name='ProfileScreen' component={ProfileScreen}/>
@@ -107,15 +91,15 @@ const styles = StyleSheet.create({
       borderTopColor: '#999999',
       borderTopWidth: 1,
     },
-  // addButton: {
-  //     color: '#212121',
-  //     backgroundColor: '#fffffff',
-  //     height: 40,
-  //     width: 70, 
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //     borderRadius: 20,
-  //   },
+  addButton: {
+      color: '#ffffff',
+      backgroundColor: '#FF6C00',
+      height: 40,
+      width: 70, 
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 20,
+    },
     addButtonText:{
       color: '#ffffff',
       fontSize: 18,

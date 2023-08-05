@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import RegistrationScreen from '../Screens/RegistrationScreen';
 import LoginScreen from '../Screens/LoginScreen';
-import Home from '../Screens/Home/Home';
+import Home from './BottomNavіgator';
 import CreatePostsScreen from '../Screens/CreatePostsScreen/CreatePostsScreen';
 import ProfileScreen from '../Screens/ProfileScreen/ProfileScreen';
 

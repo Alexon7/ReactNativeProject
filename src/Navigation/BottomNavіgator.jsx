@@ -2,9 +2,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React from "react";
 import { AntDesign, SimpleLineIcons, Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CreatePostsScreen from "../CreatePostsScreen/CreatePostsScreen";
-import PostsScreen from "../PostsScreen";
-import ProfileScreen from "../ProfileScreen/ProfileScreen";
+import CreatePostsScreen from "../Screens/CreatePostsScreen/CreatePostsScreen";
+import PostsScreen from "../Screens/PostsScreen";
+import ProfileScreen from "../Screens/ProfileScreen/ProfileScreen";
 
 
 const BottomTabs = createBottomTabNavigator(); 
@@ -21,7 +21,16 @@ const Home = ({ navigation }) => {
                 <BottomTabs.Screen 
                    options={{
                    tabBarIcon: ({focused,size, color}) =>{
-                   return <SimpleLineIcons name="grid" size={20} color={color} />
+                       return <SimpleLineIcons name="grid" size={20} color={focused ? '#ffffff' : color}
+                       style={{
+                        backgroundColor: focused ? '#FF6C00' : 'transparent', 
+                       borderRadius: 20, 
+                        padding:10,
+                         width: 70,
+                      height: 40,
+                      textAlign: 'center',
+                    }}
+                       />
                    },
                    headerTitleAlign:"center",
                    headerRightContainerStyle: { paddingRight: 20 },
@@ -33,20 +42,32 @@ const Home = ({ navigation }) => {
 
                 {/* ADD BUTTON */}
                 <BottomTabs.Screen  options={{
-                   tabBarIcon: () => {
-                   return <TouchableOpacity style={ styles.addButton } activeOpacity={0.5} onPress={()=>navigation.navigate('CreatePostsScreen')}>
-                    <Text style={ styles.addButtonText }>+</Text>
+                   tabBarIcon: ({ focused }) => {
+                   return <TouchableOpacity style={ [
+                        styles.addButton,{backgroundColor: focused ? '#FF6C00' : 'transparent'}
+                   ]}
+                     activeOpacity={0.5} onPress={() => navigation.navigate('CreatePostsScreen')}>
+                    <Text style={ [styles.addButtonText, { color: focused ? "#ffffff" : "#212121" }]}>+</Text>
                     </TouchableOpacity>
                    },
                    headerShown: false,
                    tabBarStyle: { display: "none" },
                    headerTitleAlign: "center",
-                }} name='Створити публікацію' component={CreatePostsScreen}/>
+                }} name='CreatePost' component={CreatePostsScreen}/>
              
                 {/* PROFILE BUTTON */}
                 <BottomTabs.Screen options={{
                    tabBarIcon: ({focused,size, color}) =>{
-                   return <AntDesign name="user" size={20} color={color} />
+                    return <AntDesign name="user" size={20} color={focused ? '#ffffff' : color}
+                    style={{
+                        backgroundColor: focused ? '#FF6C00' : 'transparent', 
+                      borderRadius: 20, 
+                        padding:10,
+                         width: 70,
+                      height: 40,
+                      textAlign: 'center',
+                                                                  
+                    }} />
                    },
                    headerShown: false,
                 }} name='ProfileScreen' component={ProfileScreen}/>
@@ -86,14 +107,15 @@ const styles = StyleSheet.create({
       borderTopColor: '#999999',
       borderTopWidth: 1,
     },
-    addButton:{
-      backgroundColor: '#FF6C00',
-      height: 40,
-      width: 70, 
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: 20,
-    },
+  // addButton: {
+  //     color: '#212121',
+  //     backgroundColor: '#fffffff',
+  //     height: 40,
+  //     width: 70, 
+  //     justifyContent: "center",
+  //     alignItems: "center",
+  //     borderRadius: 20,
+  //   },
     addButtonText:{
       color: '#ffffff',
       fontSize: 18,

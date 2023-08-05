@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, ImageBackground } 
 import React from "react";
 import { EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-const trashImg = require('./trash.png');
+const trashImg = require('../../Source/trash.png');
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         // justifyContent: "center",
         // alignItems: "center",
       width: "100%",
-    height: 200,
+    height: 240,
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderColor: "#E8E8E8",

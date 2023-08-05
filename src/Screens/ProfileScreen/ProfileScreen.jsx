@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList } from "react-native";
 import React from "react";
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const backImage = require('../../Source/Photo_BG.png');
-const buttonImg = require('../ProfileScreen/add.png');
+const buttonImg = require('../../Source/add.png');
 const profilePhoto = require('../../Source/Ava.png');
 
 const postImg = require('../../Source/View.png');
@@ -14,8 +14,8 @@ const BottomTabsProf = createBottomTabNavigator();
 
 function ProfileScreen({navigation}) {
     return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
        <ImageBackground source={backImage} style={styles.backImg}> 
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={ styles.container }>
@@ -28,14 +28,22 @@ function ProfileScreen({navigation}) {
                  <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })}>
                    <Feather name="log-out" size={24} color="gray" />
                  </TouchableOpacity>
-               <Text style={ styles.title }>Natali Romanova</Text>      
-            { data.map (el => 
+              <Text style={styles.title}>Natali Romanova</Text> 
+              <FlatList
+              data={data}
+              keyExtractor={(item) => item.id.toString()} // Assuming id is a number
+              renderItem={({ item }) => (
+                <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
+                )}
+                 showsVerticalScrollIndicator={false} 
+            />
+            {/* { data.map (el => 
             <Post key={ el.id } img = { postImg } text={ el.name } msgs = { 0 } location={ el.location }/>      
-            )}
+            )} */}
             </View>  
         </View>
        </ImageBackground>
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaView>
     );
 };
@@ -150,7 +158,16 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontSize: 16,
         lineHeight: 19,
-      },
+  },
+      
+  backImg: {
+     flex: 1,
+    // position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  }
 });
 
 export default ProfileScreen;

@@ -31,35 +31,38 @@ const  CreatePost =({navigation})=> { return (
       <TouchableOpacity style={styles.postButton} activeOpacity={0.5}>
                   <Text style={ styles.postButtonText }>Опубліковати</Text>
       </TouchableOpacity>
-   </View>
+    </View>
+    <View style={ styles.trashButton } activeOpacity={0.5} >
+       <EvilIcons name="trash" size={24} color="#BDBDBD" />
+                    </View>
 </View>
 )};
 
 
-const CreatePostsScreen = ({navigation}) => {
-    return (
-        <BottomTabs.Navigator screenOptions={{
-            tabBarShowLabel: false,
-            tabBarStyle: { height: 80, borderBottomColor: '#E8E8E8', borderBottomWidth: 2, }}}>
-            <BottomTabs.Screen 
-                   options={{
-                   tabBarIcon: () =>{
-                   return <TouchableOpacity style={ styles.trashButton } activeOpacity={0.5} >
-                      <EvilIcons name="trash" size={24} color="#BDBDBD" />
-                    </TouchableOpacity>
-                   },
-                   headerLeft: () => (
-                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}
-                     onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
-                       <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
-                    </TouchableOpacity>),
-                    headerLeftContainerStyle: { paddingLeft: 10 },
-                   headerTitleAlign:"center",
-                   headerTitleStyle: { paddingBottom: 5 }
-                }} name='Створити публікацію' component={CreatePost}/>
-        </BottomTabs.Navigator>
-    );
-  };
+// const CreatePostsScreen = ({navigation}) => {
+//     return (
+//         <BottomTabs.Navigator screenOptions={{
+//             tabBarShowLabel: false,
+//             tabBarStyle: { height: 80, borderBottomColor: '#E8E8E8', borderBottomWidth: 2, }}}>
+//             <BottomTabs.Screen 
+//                    options={{
+//                    tabBarIcon: () =>{
+//                    return <View style={ styles.trashButton } activeOpacity={0.5} >
+//                       <EvilIcons name="trash" size={24} color="#BDBDBD" />
+//                     </View>
+//                    },
+//                    headerLeft: () => (
+//                     <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}
+//                      onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
+//                        <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
+//                     </TouchableOpacity>),
+//                     headerLeftContainerStyle: { paddingLeft: 10 },
+//                    headerTitleAlign:"center",
+//                    headerTitleStyle: { paddingBottom: 5 }
+//                 }} name='Створити публікацію' component={CreatePost}/>
+//         </BottomTabs.Navigator>
+//     );
+  // };
 
 const styles = StyleSheet.create({
     trashButton:{
@@ -168,9 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
       textAlign: "center",
+      marginBottom: 22,
+      marginLeft: 'auto',
+       marginRight: 'auto',
     
        },
    
 });  
 
-export default CreatePostsScreen;
+export default CreatePost;

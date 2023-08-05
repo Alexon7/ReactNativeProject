@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import React from "react";
-import { AntDesign, SimpleLineIcons, Feather } from '@expo/vector-icons';
+import { AntDesign, SimpleLineIcons, Feather, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CreatePostsScreen from "../Screens/CreatePostsScreen";
+import CreatePost from "../Screens/CreatePostsScreen";
 import PostsScreen from "../Screens/PostsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 
@@ -27,25 +27,36 @@ const Home = ({ navigation }) => {
                    headerTitleAlign:"center",
                    headerRightContainerStyle: { paddingRight: 20 },
                    headerRight: () => (
-                    <View style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Login')} >
+                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Login')} >
                        <Feather name="log-out" size={24} color="gray" />
-                    </View>)
+                    </TouchableOpacity>)
                 }} name='Публікації' component={PostsScreen}/>
 
                 {/* ADD BUTTON */}
                 <BottomTabs.Screen  options={{
                    tabBarIcon: ({ focused }) => {
-                   return <TouchableOpacity style={ [
+                   return <View style={ [
                         styles.addButton
                    ]}
                      activeOpacity={0.5} onPress={() => navigation.navigate('CreatePostsScreen')}>
                     <Text style={styles.addButtonText}>+</Text>
-                    </TouchableOpacity>
-                   },
-                   headerShown: false,
-                   tabBarStyle: { display: "none" },
+                    </View>
+          },
+                   headerLeft: () => (
+                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
+                       <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
+                    </TouchableOpacity>),
+                  //  headerLeft: () => (
+                  //   <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}
+                  //    onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
+                  //      <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
+                  //   </TouchableOpacity>),
+                    headerLeftContainerStyle: { paddingLeft: 10 },
+                   headerTitleAlign:"center",
+                   headerTitleStyle: { paddingBottom: 5 },
+                                     tabBarStyle: { display: "none" },
                    headerTitleAlign: "center",
-                }} name='CreatePost' component={CreatePostsScreen}/>
+                }} name='Створити публікацію' component={CreatePost}/>
              
                 {/* PROFILE BUTTON */}
                 <BottomTabs.Screen options={{

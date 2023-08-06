@@ -19,7 +19,8 @@ const Home = ({ navigation }) => {
 
                 {/* GRID */}
                 <BottomTabs.Screen 
-                   options={{
+          options={{
+                      title: 'Публікації',
                    tabBarIcon: ({focused,size, color}) =>{
                        return <SimpleLineIcons name="grid" size={20} color={focused ? '#FF6C00' : color}
                                               />
@@ -30,10 +31,11 @@ const Home = ({ navigation }) => {
                     <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Login')} >
                        <Feather name="log-out" size={24} color="gray" />
                     </TouchableOpacity>)
-                }} name='Публікації' component={PostsScreen}/>
+                }} name='PostsScreen' component={PostsScreen}/>
 
                 {/* ADD BUTTON */}
-                <BottomTabs.Screen  options={{
+        <BottomTabs.Screen options={{
+                   title: 'Створити публікацію',
                    tabBarIcon: ({ focused }) => {
                    return <View style={ [
                         styles.addButton
@@ -43,7 +45,7 @@ const Home = ({ navigation }) => {
                     </View>
           },
                    headerLeft: () => (
-                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
+                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate(('PostsScreen'))} >
                        <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
                     </TouchableOpacity>),
                                      headerLeftContainerStyle: { paddingLeft: 10 },
@@ -51,7 +53,7 @@ const Home = ({ navigation }) => {
                    headerTitleStyle: { paddingBottom: 5 },
                     tabBarStyle: { display: "none" },
                    headerTitleAlign: "center",
-                }} name='Створити публікацію' component={CreatePost}/>
+                }} name='CreatePost' component={CreatePost}/>
              
                 {/* PROFILE BUTTON */}
                 <BottomTabs.Screen options={{

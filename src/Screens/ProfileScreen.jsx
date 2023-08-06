@@ -35,11 +35,11 @@ function ProfileScreen({navigation}) {
                 <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
                 )}
                  showsVerticalScrollIndicator={false} 
-            />           
-            </View>  
-            </View>
-                 </ImageBackground>
-         </SafeAreaView>
+            />
+             </View>  
+          </View>          
+       </ImageBackground>
+    </SafeAreaView>
     );
 };
 

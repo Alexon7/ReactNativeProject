@@ -36,15 +36,5 @@ function PostsScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-    //   <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-    //     <ScrollView showsVerticalScrollIndicator={false}>
-    //       <ProfileElement avatar= { avatar } name="Natali Romanova" email="email@example.com" />
-    //       { data.map (el => 
-    //         <Post key={ el.id } img = { postImg } text={ el.name } msgs = { 0 } location={ el.location }/>      
-    //       )}
-    //     </ScrollView>
-    //   </SafeAreaView>
-    // );
-  // };
-
+    
   export default PostsScreen;

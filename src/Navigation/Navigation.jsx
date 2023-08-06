@@ -13,7 +13,7 @@ const Navigation = () =>{
        <MainStack.Screen name='Login' component={LoginScreen}/>
        <MainStack.Screen name='Registratione' component={RegistrationScreen}/>
        <MainStack.Screen name='Home' component={Home}/> 
-       <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}/> 
+       <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}  options={{title: 'Створити публікацію'}}/> 
        <MainStack.Screen name='ProfileScreen' component={ProfileScreen}/> 
     </MainStack.Navigator>
   );

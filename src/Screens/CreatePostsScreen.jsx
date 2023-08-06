@@ -39,30 +39,6 @@ const  CreatePost =({navigation})=> { return (
 )};
 
 
-// const CreatePostsScreen = ({navigation}) => {
-//     return (
-//         <BottomTabs.Navigator screenOptions={{
-//             tabBarShowLabel: false,
-//             tabBarStyle: { height: 80, borderBottomColor: '#E8E8E8', borderBottomWidth: 2, }}}>
-//             <BottomTabs.Screen 
-//                    options={{
-//                    tabBarIcon: () =>{
-//                    return <View style={ styles.trashButton } activeOpacity={0.5} >
-//                       <EvilIcons name="trash" size={24} color="#BDBDBD" />
-//                     </View>
-//                    },
-//                    headerLeft: () => (
-//                     <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}
-//                      onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
-//                        <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
-//                     </TouchableOpacity>),
-//                     headerLeftContainerStyle: { paddingLeft: 10 },
-//                    headerTitleAlign:"center",
-//                    headerTitleStyle: { paddingBottom: 5 }
-//                 }} name='Створити публікацію' component={CreatePost}/>
-//         </BottomTabs.Navigator>
-//     );
-  // };
 
 const styles = StyleSheet.create({
     trashButton:{
@@ -74,22 +50,13 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     postContainer: { flex: 1, 
-        // justifyContent: "center",
-        // alignItems: "center", 
-        // backgroundColor: "#fff",
-         flex: 1,
+                flex: 1,
     paddingHorizontal: 16,
     paddingTop: 28,
     backgroundColor: "#fff",
     },
     postImg: {
-        // flex: 2,
-        // width: '80%',
-        // height: '40%',
-        // color: '#F6F6F6',
-        // justifyContent: "center",
-        // alignItems: "center",
-      width: "100%",
+             width: "100%",
     height: 240,
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
@@ -99,11 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     },
     postImgAdd:{
-        // width: 40,
-        // height: 40,
-        // borderRadius: 100,
-        // color: '#FFFFFF',
-       width: 60,
+             width: 60,
     height: 60,
     backgroundColor: "#fff",
     justifyContent: "center",
@@ -144,12 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     },
     postName:{  
-      //  width: 343,
-      //  height: 50,
-      //  borderRadius: 8,
-      //  marginTop: 33,
-      //  padding: 16,
-      fontSize: 16,
+            fontSize: 16,
     fontFamily: "Roboto",
     color: "#BDBDBD",
     lineHeight: 19,     

@@ -15,10 +15,8 @@ const BottomTabsProf = createBottomTabNavigator();
 function ProfileScreen({navigation}) {
     return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-        <ImageBackground source={backImage} style={styles.backImg}> 
-          <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+              <ImageBackground source={backImage} style={styles.backImg}> 
+               <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={ styles.container }>
                <View style={ styles.pfotoContainer }>
                  <ImageBackground source={profilePhoto} style={{width: '100%', height: '100%'}}></ImageBackground>
@@ -29,24 +27,19 @@ function ProfileScreen({navigation}) {
                  <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Login', { screen: 'LoginScreen' })}>
                    <Feather name="log-out" size={24} color="gray" />
                  </TouchableOpacity>
-              <Text style={styles.title}>Natali Romanova</Text> 
-              <FlatList
+                <Text style={styles.title}>Natali Romanova</Text> 
+                             <FlatList
               data={data}
-              keyExtractor={(item) => item.id.toString()} // Assuming id is a number
+              keyExtractor={(item) => item.id.toString()} 
               renderItem={({ item }) => (
                 <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
                 )}
                  showsVerticalScrollIndicator={false} 
-            />
-            {/* { data.map (el => 
-            <Post key={ el.id } img = { postImg } text={ el.name } msgs = { 0 } location={ el.location }/>      
-            )} */}
+            />           
             </View>  
             </View>
-            </ScrollView>
-       </ImageBackground>
-      {/* </ScrollView> */}
-    </SafeAreaView>
+                 </ImageBackground>
+         </SafeAreaView>
     );
 };
 

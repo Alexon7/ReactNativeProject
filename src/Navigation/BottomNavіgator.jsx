@@ -46,15 +46,10 @@ const Home = ({ navigation }) => {
                     <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
                        <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
                     </TouchableOpacity>),
-                  //  headerLeft: () => (
-                  //   <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}
-                  //    onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })} >
-                  //      <Ionicons name="arrow-back-sharp" size={24} color="#212121CC" />
-                  //   </TouchableOpacity>),
-                    headerLeftContainerStyle: { paddingLeft: 10 },
+                                     headerLeftContainerStyle: { paddingLeft: 10 },
                    headerTitleAlign:"center",
                    headerTitleStyle: { paddingBottom: 5 },
-                                     tabBarStyle: { display: "none" },
+                    tabBarStyle: { display: "none" },
                    headerTitleAlign: "center",
                 }} name='Створити публікацію' component={CreatePost}/>
              

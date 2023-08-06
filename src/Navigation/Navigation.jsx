@@ -12,8 +12,8 @@ const Navigation = () =>{
     <MainStack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
        <MainStack.Screen name='Login' component={LoginScreen}/>
        <MainStack.Screen name='Registratione' component={RegistrationScreen}/>
-       <MainStack.Screen name='Home' component={Home} options={{title: 'Публікації'}}/> 
-       <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}  options={{title: 'Створити публікацію'}}/> 
+       <MainStack.Screen name='Home' component={Home}/> 
+       <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}/> 
        <MainStack.Screen name='ProfileScreen' component={ProfileScreen}/> 
     </MainStack.Navigator>
   );

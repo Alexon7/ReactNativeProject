@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView, Platform} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from "react-native";
 import React from "react";
 import { EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,9 +9,12 @@ const BottomTabs = createBottomTabNavigator();
 
 const CreatePost = ({ navigation }) => {
   return (
-   <KeyboardAvoidingView
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+         <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
+        style={styles.container}
+         keyboardVerticalOffset={-100}
+      >        
 <View style={ styles.postContainer }>
    <View style={ styles.postImg }>
       <TouchableOpacity style={ styles.postImgAdd } activeOpacity={0.5}>
@@ -39,8 +42,10 @@ const CreatePost = ({ navigation }) => {
     <View style={ styles.trashButton } activeOpacity={0.5} >
        <EvilIcons name="trash" size={24} color="#BDBDBD" />
                     </View>
-      </View>
-      </KeyboardAvoidingView>
+        </View>
+        </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      
 )};
 
 
@@ -137,8 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-      textAlign: "center",
-      marginBottom: 22,
+          marginBottom: 22,
       marginLeft: 'auto',
        marginRight: 'auto',
     

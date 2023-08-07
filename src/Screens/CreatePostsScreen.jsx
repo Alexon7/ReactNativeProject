@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView, Platform} from "react-native";
 import React from "react";
 import { EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  
+
     postContainer: { flex: 1, 
                     paddingHorizontal: 16,
     paddingTop: 28,

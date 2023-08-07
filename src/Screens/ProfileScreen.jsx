@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList, ScrollView } from "react-native";
 import React from "react";
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -14,9 +14,11 @@ const BottomTabsProf = createBottomTabNavigator();
 
 function ProfileScreen({navigation}) {
     return (
-    // <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-    //           <ImageBackground source={backImage} style={styles.backImg}> 
-    //            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+       
+    //  <SafeAreaView>
+    //   <ScrollView showsVerticalScrollIndicator={false} >
+    //    <ImageBackground source={backImage} style={styles.backImg}> 
+    //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     //         <View style={ styles.container }>
     //            <View style={ styles.pfotoContainer }>
     //              <ImageBackground source={profilePhoto} style={{width: '100%', height: '100%'}}></ImageBackground>
@@ -24,21 +26,17 @@ function ProfileScreen({navigation}) {
     //                <ImageBackground source={buttonImg} style={{width: '100%', height: '100%'}}></ImageBackground>
     //              </TouchableOpacity>
     //            </View>
-    //              <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Login', { screen: 'LoginScreen' })}>
+    //              <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Home', { screen: 'PostsScreen' })}>
     //                <Feather name="log-out" size={24} color="gray" />
     //              </TouchableOpacity>
-    //             <Text style={styles.title}>Natali Romanova</Text> 
-    //                          <FlatList
-    //           data={data}
-    //           keyExtractor={(item) => item.id.toString()} 
-    //           renderItem={({ item }) => (
-    //             <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
-    //             )}
-    //              showsVerticalScrollIndicator={false} 
-    //         />
-    //          </View>  
-    //       </View>          
+    //            <Text style={ styles.title }>Natali Romanova</Text>      
+    //         { data.map (el => 
+    //         <Post key={ el.id } img = { postImg } text={ el.name } msgs = { 0 } location={ el.location }/>      
+    //         )}
+    //         </View>  
+    //     </View>
     //    </ImageBackground>
+    //   </ScrollView>
     // </SafeAreaView>
     
    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>

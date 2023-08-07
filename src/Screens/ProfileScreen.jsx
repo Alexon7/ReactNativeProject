@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, SafeAreaView,FlatList } from "react-native";
 import React from "react";
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

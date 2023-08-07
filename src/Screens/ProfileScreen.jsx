@@ -14,31 +14,64 @@ const BottomTabsProf = createBottomTabNavigator();
 
 function ProfileScreen({navigation}) {
     return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-              <ImageBackground source={backImage} style={styles.backImg}> 
-               <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <View style={ styles.container }>
-               <View style={ styles.pfotoContainer }>
-                 <ImageBackground source={profilePhoto} style={{width: '100%', height: '100%'}}></ImageBackground>
-                 <TouchableOpacity style={ styles.addbutton } activeOpacity={0.5}>
-                   <ImageBackground source={buttonImg} style={{width: '100%', height: '100%'}}></ImageBackground>
-                 </TouchableOpacity>
-               </View>
-                 <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Login', { screen: 'LoginScreen' })}>
-                   <Feather name="log-out" size={24} color="gray" />
-                 </TouchableOpacity>
-                <Text style={styles.title}>Natali Romanova</Text> 
-                             <FlatList
-              data={data}
-              keyExtractor={(item) => item.id.toString()} 
-              renderItem={({ item }) => (
+    // <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+    //           <ImageBackground source={backImage} style={styles.backImg}> 
+    //            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    //         <View style={ styles.container }>
+    //            <View style={ styles.pfotoContainer }>
+    //              <ImageBackground source={profilePhoto} style={{width: '100%', height: '100%'}}></ImageBackground>
+    //              <TouchableOpacity style={ styles.addbutton } activeOpacity={0.5}>
+    //                <ImageBackground source={buttonImg} style={{width: '100%', height: '100%'}}></ImageBackground>
+    //              </TouchableOpacity>
+    //            </View>
+    //              <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5}  onPress={()=>navigation.navigate('Login', { screen: 'LoginScreen' })}>
+    //                <Feather name="log-out" size={24} color="gray" />
+    //              </TouchableOpacity>
+    //             <Text style={styles.title}>Natali Romanova</Text> 
+    //                          <FlatList
+    //           data={data}
+    //           keyExtractor={(item) => item.id.toString()} 
+    //           renderItem={({ item }) => (
+    //             <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
+    //             )}
+    //              showsVerticalScrollIndicator={false} 
+    //         />
+    //          </View>  
+    //       </View>          
+    //    </ImageBackground>
+    // </SafeAreaView>
+    
+   <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <ImageBackground source={backImage} style={styles.backImg}> 
+        <FlatList
+          data={[{ key: "header" }, ...data]} // Добавляем заголовок в начало списка
+          keyExtractor={(item) => item.id?.toString() || item.key} 
+          renderItem={({ item }) => {
+            if (item.key === "header") {
+              return (
+                <View style={styles.container}>
+                  <View style={styles.pfotoContainer}>
+                    <ImageBackground source={profilePhoto} style={{ width: '100%', height: '100%' }}></ImageBackground>
+                    <TouchableOpacity style={styles.addbutton} activeOpacity={0.5}>
+                      <ImageBackground source={buttonImg} style={{ width: '100%', height: '100%' }}></ImageBackground>
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity style={styles.logoutButton} activeOpacity={0.5} onPress={() => navigation.navigate('Login', { screen: 'LoginScreen' })}>
+                    <Feather name="log-out" size={24} color="gray" />
+                  </TouchableOpacity>
+                  <Text style={styles.title}>Natali Romanova</Text>
+                </View>
+              );
+            } else {
+              return (
                 <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
-                )}
-                 showsVerticalScrollIndicator={false} 
-            />
-             </View>  
-          </View>          
-       </ImageBackground>
+              );
+            }
+          }}
+          showsVerticalScrollIndicator={false} 
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} // Добавляем стиль для контента FlatList
+        />
+      </ImageBackground>
     </SafeAreaView>
     );
 };
@@ -156,8 +189,8 @@ const styles = StyleSheet.create({
   },
       
   backImg: {
-     flex: 1,
-    // position: 'absolute',
+    flex: 1,
+    resizeMode: 'cover',   
     top: 0,
     bottom: 0,
     left: 0,

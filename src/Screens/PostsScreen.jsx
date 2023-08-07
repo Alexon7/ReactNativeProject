@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import React from "react";
 import Post from "../Components/Post";
-import ProfileElement from "../Components/Post";
+import ProfileElement from "../Components/ProfileElement";
 const postImg = require("../Source/View.png");
 const avatar = require("../Source/Ava.png");
 import data from '../Source/posts'

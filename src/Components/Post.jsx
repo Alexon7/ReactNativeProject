@@ -23,7 +23,8 @@ const Post = ({ img, text, msgs, location }) =>{
 };
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
+      backgroundColor: '#FFFFFF',
         width: 400,
         height: 400,        
         justifyContent: "flex-start",

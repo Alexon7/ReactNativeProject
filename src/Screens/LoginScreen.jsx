@@ -184,9 +184,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "400",
     fontSize: 16,
-    lineHeight: 19,
-  
-    
+    lineHeight: 19,       
   },
   showPassword: {
     top: -34,

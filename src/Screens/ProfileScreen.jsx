@@ -12,16 +12,7 @@ import Post from "../Components/Post";
 
 const BottomTabsProf = createBottomTabNavigator(); 
 
-function ProfileScreen({navigation}) {
-    return (
-       
-      
-   <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      <ImageBackground source={backImage} style={styles.backImg}> 
-        <FlatList 
-          data={[{ key: "header" }, ...data]} // Добавляем заголовок в начало списка
-          keyExtractor={(item) => item.id?.toString() || item.key} 
-          renderItem={({ item }) => {
+const  renderItem=({ item }) => {
             if (item.key === "header") {
               return (
                 <View style={styles.container}>
@@ -42,7 +33,16 @@ function ProfileScreen({navigation}) {
                 <Post key={item.id} img={postImg} text={item.name} msgs={0} location={item.location} />
               );
             }
-          }}
+}
+
+function ProfileScreen({navigation}) {
+    return (     
+   <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <ImageBackground source={backImage} style={styles.backImg}> 
+        <FlatList 
+          data={[{ key: "header" }, ...data]} // Добавляем заголовок в начало списка
+          keyExtractor={(item) => item.id?.toString() || item.key} 
+          renderItem={renderItem}
           showsVerticalScrollIndicator={false} 
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} // Добавляем стиль для контента FlatList
         />

@@ -12,7 +12,7 @@ const trashImg = require('../Source/trash.png');
 
 const BottomTabs = createBottomTabNavigator();
 
-const CreatePost = ({ navigation, addNewPost }) => {
+const CreatePost = ({ navigation }) => {
  const [location, setLocation] = useState('');
 	const [uri, setUri] = useState(null);
 	const [name, setName] = useState('');
@@ -83,8 +83,7 @@ useEffect(() => {
 
 const handlePublish = async () => {
   const post = await createPost();
-   addNewPost(post);
-				navigation.navigate('PostsScreen');
+   				navigation.navigate('PostsScreen');
 		setUri(null);
 		setName('');
 		setLocation('');
@@ -135,6 +134,7 @@ const handlePublish = async () => {
             </View>
   
           <Text style={styles.postImgText}>{!uri ? 'Завантажте фото' : 'Редагувати фото'}</Text>
+         
           <TextInput style={[styles.postName, !name && styles.textPlaceholder]}
             placeholder="Назва..."
             onChangeText={setName}
@@ -148,13 +148,15 @@ const handlePublish = async () => {
               placeholderTextColor="#BDBDBD"
               value={location}
               onChangeText={setLocation} />
-            </View>
+          </View>
+         
             <Button
               text="Опубліковати"
               onPressFunction={handlePublish}
               disabled={!uri || (isLoading && true)}
-            />
-            {!isLoading && (
+          />
+            <View style={styles.trashButtonContainer}>
+                                 {!isLoading && (
               <Pressable
                 style={[
                   styles.trashButton,
@@ -174,7 +176,8 @@ const handlePublish = async () => {
               </Pressable>
             )
             }
-            
+          </View>
+          
         </KeyboardAvoidingView>
         </View>
     </TouchableWithoutFeedback>
@@ -186,21 +189,14 @@ const handlePublish = async () => {
 
 
 const styles = StyleSheet.create({
-    trashButton:{
-        backgroundColor: '#F6F6F6',
-        height: 40,
-        width: 70, 
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 20,
-  },
-  
+   
   container: {
     flex: 1,
     paddingHorizontal: 16,
 		paddingTop: 32,
 		paddingBottom: 22,
-		backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF',
+      
   },
 
   
@@ -210,7 +206,8 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		overflow: 'hidden',
 		backgroundColor: '#E8E8E8',
-		justifyContent: 'center',
+    justifyContent: 'center',
+
   },
 
   camera: {
@@ -238,9 +235,9 @@ const styles = StyleSheet.create({
 		fontSize: 16,
   },
     
-    postForm:{
-        flex: 3,
-  },
+  //   postForm:{
+  //       flex: 3,
+  // },
     
     inputField: {
 		justifyContent: 'center',
@@ -300,17 +297,25 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
   },
     
-    trashButton: {
-    marginTop: 'auto',
-		alignSelf: 'center',
+  trashButtonContainer: {
+    flexGrow: 1,
+    //  justifyContent: 'flex-end'
+   
+    },
+     
+  trashButton: {
+               		alignSelf: 'center',
 		justifyContent: 'center',
-      alignItems: 'center',
-     marginTop: 120,
-		width: 70,
+    alignItems: 'center',
+    width: 70,
 		height: 40,
-		borderRadius: 50,
-		backgroundColor: '#FF6C00',
-           
+    borderRadius: 50,
+    // marginTop: 120,
+    backgroundColor: '#FF6C00',
+   
+   
+        
+               
   },
     inputTextWithIconLeft: {
 		paddingLeft: 28,

@@ -1,22 +1,30 @@
-import { View, StyleSheet, ImageBackground, Text } from "react-native";
+import { View, StyleSheet, ImageBackground, Text, Pressable } from "react-native";
 import React from "react";
 import { Feather } from '@expo/vector-icons'; 
 import { EvilIcons } from '@expo/vector-icons';
 
-const Post = ({ img, text, msgs, location }) =>{
+const Post = ({ img, text, msgs, location, navigation }) =>{
     return (
         <View style={ styles.container }>
           <ImageBackground source={ img } style={ styles.postImg }></ImageBackground>
           <Text style={ styles.posText } >{text}</Text>
           <View style={ styles.infoContainer }>
-            <View style={ styles.info }>
+            <Pressable style={ styles.info } onPress={() =>
+									navigation.navigate('CommentsScreen')
+								}>
               <Feather name="message-circle" size={18} color="gray" />
               <Text>{ msgs }</Text>
-            </View>
-            <View style={ styles.info }>
+            </Pressable>
+            <Pressable style={ styles.info } onPress={() => {
+									if (typeof item.location.coords === 'object') {
+										navigation.navigate('MapScreen');
+									} else {
+										alert('No information');
+									}
+								}}>
               <EvilIcons name="location" size={24} color="gray" />
               <Text style={ styles.infolink }>{ location }</Text>
-            </View>
+            </Pressable>
           </View>
         </View>
     );

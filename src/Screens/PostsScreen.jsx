@@ -1,18 +1,12 @@
 import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Post from "../Components/Post";
 import ProfileElement from "../Components/ProfileElement";
 const postImg = require("../Source/View.png");
 const avatar = require("../Source/Ava.png");
 import data from '../Source/posts'
 
-function PostsScreen({ navigation }) {
-
-  const [posts, setPosts] = useState(data);
-
-  const addNewPost = (newPost) => {
-    setPosts([newPost, ...posts]);
-  };
+const PostsScreen = ({ navigation }) => {
   
   const renderItem = ({ item }) => (
     <Post
@@ -21,19 +15,24 @@ function PostsScreen({ navigation }) {
       text={item.name}
       msgs={0}
       location={item.location}
+       navigation={navigation}
     />
   );
   
   return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <FlatList
-        data={posts}
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={           
-             <ProfileElement avatar={avatar} name="Natali Romanova" email="email@example.com" />
-                  }
+        ListHeaderComponent={
+          <ProfileElement
+            avatar={avatar}
+            name="Natali Romanova"
+            email="email@example.com"
+          />
+        }
       />
     </SafeAreaView>
   );

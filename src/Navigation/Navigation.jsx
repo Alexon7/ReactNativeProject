@@ -19,7 +19,7 @@ const Navigation = () =>{
        <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}/> 
         <MainStack.Screen name='ProfileScreen' component={ProfileScreen} /> 
         <MainStack.Screen name='CommentsScreen' component={CommentsScreen} screenOptions={{ headerShown: true }} /> 
-         <MainStack.Screen name='MapScreen' component={MapScreen} /> 
+         <MainStack.Screen name='MapScreen' component={MapScreen} options={{ headerShown: true }}/> 
     </MainStack.Navigator>
   );
 };

@@ -149,7 +149,7 @@ const handlePublish = async () => {
               value={location}
               onChangeText={setLocation} />
           </View>
-         
+       
             <Button
               text="Опубліковати"
               onPressFunction={handlePublish}
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
 		paddingTop: 32,
-		paddingBottom: 22,
+		// paddingBottom: 22,
     backgroundColor: '#FFFFFF',
       
   },
@@ -235,9 +235,9 @@ const styles = StyleSheet.create({
 		fontSize: 16,
   },
     
-  //   postForm:{
-  //       flex: 3,
-  // },
+    postForm:{
+        flex: 3,
+  },
     
     inputField: {
 		justifyContent: 'center',

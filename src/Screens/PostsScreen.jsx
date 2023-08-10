@@ -4,7 +4,8 @@ import Post from "../Components/Post";
 import ProfileElement from "../Components/ProfileElement";
 const postImg = require("../Source/View.png");
 const avatar = require("../Source/Ava.png");
-import data from '../Source/posts'
+import data from '../Source/posts';
+import { useNavigation } from "@react-navigation/native";
 
 const PostsScreen = ({ navigation }) => {
   

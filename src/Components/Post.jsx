@@ -3,7 +3,7 @@ import React from "react";
 import { Feather } from '@expo/vector-icons'; 
 import { EvilIcons } from '@expo/vector-icons';
 
-const Post = ({ img, text, msgs, location, navigation }) =>{
+const Post = ({ img, text, msgs, location, postLocation, navigation }) =>{
     return (
         <View style={ styles.container }>
           <ImageBackground source={ img } style={ styles.postImg }></ImageBackground>
@@ -16,11 +16,12 @@ const Post = ({ img, text, msgs, location, navigation }) =>{
               <Text>{ msgs }</Text>
             </Pressable>
             <Pressable style={ styles.info } onPress={() => {
-									if (typeof item.location.coords === 'object') {
-										navigation.navigate('MapScreen');
-									} else {
-										alert('No information');
-									}
+									
+            navigation.navigate('MapScreen'), {
+                       postLocation,
+              location,
+                    };
+									
 								}}>
               <EvilIcons name="location" size={24} color="gray" />
               <Text style={ styles.infolink }>{ location }</Text>

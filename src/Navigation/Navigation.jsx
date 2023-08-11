@@ -18,8 +18,14 @@ const Navigation = () =>{
        <MainStack.Screen name='Home' component={Home}/> 
        <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}/> 
         <MainStack.Screen name='ProfileScreen' component={ProfileScreen} /> 
-        <MainStack.Screen name='CommentsScreen' component={CommentsScreen} screenOptions={{ headerShown: true }} /> 
-         <MainStack.Screen name='MapScreen' component={MapScreen} options={{ headerShown: true }}/> 
+        <MainStack.Screen name='CommentsScreen' component={CommentsScreen}  options={{
+              title: "Коментарі",
+              headerTitleAlign: "center",
+            }}/> 
+         <MainStack.Screen name='MapScreen' component={MapScreen}  options={{
+              title: "Карта",
+              headerTitleAlign: "center",
+            }}/> 
     </MainStack.Navigator>
   );
 };

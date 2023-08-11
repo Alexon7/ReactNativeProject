@@ -61,8 +61,9 @@ useEffect(() => {
 			let loc = await Location.getCurrentPositionAsync({});
 			const coords = {
 				latitude: loc.coords.latitude,
-				longitude: loc.coords.longitude,
-			};
+        longitude: loc.coords.longitude,
+      };
+      console.log(coords);
 			return {
 				uri,
 				name,
@@ -76,14 +77,16 @@ useEffect(() => {
 				name,
 				location: { title: location, coords: 'No information' },
 				comments: [],
-				likes: 0,
-			};
-		}
-	};
+        likes: 0,
+        			};
+      }
+     
+  };
+  
 
 const handlePublish = async () => {
   const post = await createPost();
-   				navigation.navigate('PostsScreen');
+   				navigation.navigate('PostsScreen',{uri});
 		setUri(null);
 		setName('');
 		setLocation('');
@@ -310,7 +313,7 @@ const styles = StyleSheet.create({
     width: 70,
 		height: 40,
     borderRadius: 50,
-    // marginTop: 120,
+    marginTop: 120,
     backgroundColor: '#FF6C00',
    
    

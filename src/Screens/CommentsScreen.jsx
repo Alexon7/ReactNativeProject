@@ -9,15 +9,13 @@ import {
 	Pressable,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import {data} from '../Source/posts';
+import { data } from '../Source/posts';
+const postImg = require("../Source/View.png");
 
-const CommentsScreen = () => {
+const CommentsScreen = ({ route }) => {
 	const [comment, setComment] = useState('');
 	
-	
-
-	
-   
+	   
 	const handleComment = () => {
 		if (!comment) {
 			return;
@@ -28,12 +26,12 @@ const CommentsScreen = () => {
 	};
 	return (<View style={styles.container}>
 			<View style={styles.imageContainer}>
-				<Image source={ img } style={styles.postImg} />
+			<Image source={postImg} style={styles.postImg} />
 			</View>
 
 			<View style={styles.listContainer}>
 				<FlatList
-					data={msgs}
+					data={comment}
 					renderItem={({ data }) => (
 						<View style={styles.commentContainer}>
 							<View style={styles.userImgContainer}></View>

@@ -86,7 +86,7 @@ useEffect(() => {
 
 const handlePublish = async () => {
   const post = await createPost();
-   				navigation.navigate('PostsScreen',{uri});
+   				navigation.navigate('PostsScreen',{uri, name, location });
 		setUri(null);
 		setName('');
 		setLocation('');

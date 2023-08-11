@@ -14,12 +14,23 @@ const postImg = require("../Source/View.png");
 
 const CommentsScreen = ({ route }) => {
 	const [comment, setComment] = useState('');
+	 const [comments, setComments] = useState([]);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  const currentTime = new Date().toLocaleString("uk-UA", options);
+
 	
 	   
 	const handleComment = () => {
 		if (!comment) {
 			return;
 		}
+
 		console.log(comment);
 
 		setComment('');
@@ -37,7 +48,7 @@ const CommentsScreen = ({ route }) => {
 							<View style={styles.userImgContainer}></View>
 							<View style={styles.commentTextContainer}>
 								<Text style={styles.commentText}>Коментар</Text>
-								<Text style={styles.commentDate}>Дата</Text>
+								<Text style={styles.commentDate}>{ currentTime}</Text>
 							</View>
 						</View>
 					)}

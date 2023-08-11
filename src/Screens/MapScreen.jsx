@@ -27,8 +27,8 @@ const MapScreen = ({ route }) => {
 				<Marker
 					title="You here"
 					coordinate={{
-						latitude: 55.08516365326555,
-                        longitude: 14.705564406969982}}
+						latitude: 47.097133,
+                        longitude: 37.543367}}
 					
 					// coordinate={{
 					// 	latitude: coords.latitude,

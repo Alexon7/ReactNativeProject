@@ -19,11 +19,13 @@ const Navigation = () =>{
        <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen}/> 
         <MainStack.Screen name='ProfileScreen' component={ProfileScreen} /> 
         <MainStack.Screen name='CommentsScreen' component={CommentsScreen}  options={{
-              title: "Коментарі",
+          title: "Коментарі",
+          headerShown: true,
               headerTitleAlign: "center",
             }}/> 
          <MainStack.Screen name='MapScreen' component={MapScreen}  options={{
-              title: "Карта",
+          title: "Карта",
+           headerShown: true,
               headerTitleAlign: "center",
             }}/> 
     </MainStack.Navigator>

@@ -137,7 +137,7 @@ const handlePublish = async () => {
             </View>
   
           <Text style={styles.postImgText}>{!uri ? 'Завантажте фото' : 'Редагувати фото'}</Text>
-         
+        <View style={{flexGrow: 1}}> 
           <TextInput style={[styles.postName, !name && styles.textPlaceholder]}
             placeholder="Назва..."
             onChangeText={setName}
@@ -151,16 +151,17 @@ const handlePublish = async () => {
               placeholderTextColor="#BDBDBD"
               value={location}
               onChangeText={setLocation} />
-          </View>
-       
+            </View>
+          
             <Button
               text="Опубліковати"
               onPressFunction={handlePublish}
               disabled={!uri || (isLoading && true)}
           />
-            <View style={styles.trashButtonContainer}>
-                                 {!isLoading && (
-              <Pressable
+             </View>  
+          {!isLoading && (
+     
+                           <Pressable
                 style={[
                   styles.trashButton,
                   !uri && !name && !location && styles.trashButtonDisable,
@@ -177,10 +178,10 @@ const handlePublish = async () => {
                   ]}
                 />
               </Pressable>
+            
             )
             }
-          </View>
-          
+               
         </KeyboardAvoidingView>
         </View>
     </TouchableWithoutFeedback>
@@ -195,12 +196,11 @@ const styles = StyleSheet.create({
    
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+        paddingHorizontal: 16,
 		paddingTop: 32,
-		// paddingBottom: 22,
+		paddingBottom: 22,
     backgroundColor: '#FFFFFF',
-      
-  },
+      },
 
   
   postContainer:  {
@@ -238,10 +238,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
   },
     
-    postForm:{
-        flex: 3,
-  },
-    
+      
     inputField: {
 		justifyContent: 'center',
 		marginBottom: 32,
@@ -300,24 +297,18 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
   },
     
-  trashButtonContainer: {
-    flexGrow: 1,
-    //  justifyContent: 'flex-end'
-   
-    },
+ 
      
   trashButton: {
-               		alignSelf: 'center',
+marginBottom: 20,
+   	alignSelf: 'center',
 		justifyContent: 'center',
     alignItems: 'center',
     width: 70,
 		height: 40,
-    borderRadius: 50,
-    marginTop: 120,
-    backgroundColor: '#FF6C00',
-   
-   
-        
+    borderRadius: 50,   
+    backgroundColor: '#FF6C00', 
+
                
   },
     inputTextWithIconLeft: {

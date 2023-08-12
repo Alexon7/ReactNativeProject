@@ -35,12 +35,13 @@ const Home = ({ navigation }) => {
 
                 {/* ADD BUTTON */}
         <BottomTabs.Screen options={{
-                   title: 'Створити публікацію',
+          title: 'Створити публікацію',
+                   unmountOnBlur: true,
                    tabBarIcon: ({ focused }) => {
                    return <View style={ [
                         styles.addButton
                    ]}
-                     activeOpacity={0.5} onPress={() => navigation.navigate('CreatePostsScreen')}>
+                     activeOpacity={0.5} onPress={() => navigation.navigate('CreatePostsScreen')} >
                     <Text style={styles.addButtonText}>+</Text>
                     </View>
           },

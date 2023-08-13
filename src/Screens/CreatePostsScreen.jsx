@@ -111,7 +111,8 @@ const handlePublish = async () => {
       <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={-100}
+          keyboardVerticalOffset={-100}
+          style={{ justifyContent: "center" }}
       >
         <View style={styles.postContainer}>
           {isLoading ? (
@@ -159,9 +160,7 @@ const handlePublish = async () => {
               disabled={!uri || (isLoading && true)}
           />
              </View>  
-          {!isLoading && (
-     
-                           <Pressable
+              <Pressable
                 style={[
                   styles.trashButton,
                   !uri && !name && !location && styles.trashButtonDisable,
@@ -178,11 +177,7 @@ const handlePublish = async () => {
                   ]}
                 />
               </Pressable>
-            
-            )
-            }
-               
-        </KeyboardAvoidingView>
+       </KeyboardAvoidingView>
         </View>
     </TouchableWithoutFeedback>
       
@@ -300,7 +295,7 @@ const styles = StyleSheet.create({
  
      
   trashButton: {
-marginBottom: 20,
+      
    	alignSelf: 'center',
 		justifyContent: 'center',
     alignItems: 'center',
@@ -308,7 +303,6 @@ marginBottom: 20,
 		height: 40,
     borderRadius: 50,   
     backgroundColor: '#FF6C00', 
-
                
   },
     inputTextWithIconLeft: {

@@ -1,16 +1,11 @@
-// import { StatusBar } from 'expo-status-bar';
-// import {
-//   StyleSheet,
-//   ImageBackground,
-//   View,
-//   } from "react-native";
+
 import React, { useState } from "react";
 import { useFonts } from 'expo-font';
-// import LoginScreen from './src/Screens/LoginScreen';
-// import RegistrationScreen from './src/Screens/RegistrationScreen';
 import Navigation from './src/Navigation/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './Redux/store';
 
 
 
@@ -26,27 +21,16 @@ const [fontsLoaded] = useFonts({
 	if (!fontsLoaded) {
 		return null;
 	}
-  // const [activeScreen, setActiveScreen] = useState(0);
-  // const changeScreenFunction = value => {setActiveScreen(value)};
-
+  
   return (
+    <Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
      <NavigationContainer>
       <Navigation /> 
       </NavigationContainer>
-               
-    
-  );
+  	</PersistGate>
+		</Provider>               
+     );
 }
 
 
-// const styles = StyleSheet.create({
-//   mainContainer: {
-//     flex: 1,
-//     alignItems: "center",
-//   },
-//   backgroundImage: {
-//     flex: 1,
-//     justifyContent: "flex-end",
-//     width: '100%',
-//   },
-// });

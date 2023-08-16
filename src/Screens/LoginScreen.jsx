@@ -8,41 +8,85 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-   ImageBackground
+  ImageBackground,
+   Alert
 } from "react-native";
 import { StatusBar  } from 'expo-status-bar';
-import React, { useState } from "react";
+import React, { useState, useSelector } from "react";
+import { useDispatch } from "react-redux";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config';
+import { logIn } from '../../Redux/userSlice';
 
 const backImage = require("../Source/Photo_BG.png");
 
 const LoginScreen = ({ navigation }) => {
-    const [mail, setMail] = useState('');
+
+   
+    const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [isFocused, setIsFocused] = useState("");
+   const dispatch = useDispatch();
 
-    const handleMail = text => {
-        setMail(text)
-    };
-
-    const handlePassword = text => {
-        setPassword(text)
-  };
+    const handleMail = text => { setEmail(text) };
+    const handlePassword = text => { setPassword(text) };
   
   const resetForm = () => {
-    setMail('');
+    setEmail('');
     setPassword('');
   };
 
-    const login = () => {
-        if (!mail || !password) {
-            alert("Please fill in all fields");
-            return
-        };
-      console.log(`Email: ${mail}, Password: ${password}`);
-       navigation.navigate('Home', { screen: 'PostsScreen' });
-       resetForm();
-    };
+
+  const login = async (email, password) => {
+      const user = await loginDB({ email, password });
+    if (user) {
+       navigation.navigate('PostsScreen')
+			resetForm();
+		}
+	};
+            
+      
+
+  
+  
+  const loginDB = async ({ email, password }) => {
+		try {
+			const credentials = await signInWithEmailAndPassword(
+				auth,
+				email,
+				password
+      );
+
+      if (credentials.user) {
+				setCurrentUserToStore(
+					credentials.user.displayName,
+					credentials.user.email,
+					credentials.user.photoURL
+				);
+			}
+
+			return credentials.user;
+		} catch (error) {
+			console.log(error);
+			if (error.code === 'auth/user-not-found') {
+				return Alert.alert('Такого користувача не знайдено');
+			} else if (error.code === 'auth/wrong-password') {
+				return Alert.alert('Неправильний прароль');
+			}
+		}
+  };
+  
+  const setCurrentUserToStore = async (name, email, userAvatar) => {
+		dispatch(
+			logIn({
+				name,
+				email,
+				userAvatar,
+			})
+		);
+	};
+
 
   return (
      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -63,7 +107,7 @@ const LoginScreen = ({ navigation }) => {
 
             placeholder="Адреса електронної пошти"
             inputMode="email"
-            value={mail}
+            value={email}
             onChangeText={handleMail}
             onFocus={() => {
                   setIsFocused("Email");
@@ -103,7 +147,7 @@ const LoginScreen = ({ navigation }) => {
             activeOpacity={0.5}
             onPress={login}
           >
-            <Text style={styles.loginButtonText}>Увійти</Text>
+                <Text style={styles.loginButtonText} onPress={() => { login() }}>Увійти</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.loginLink}

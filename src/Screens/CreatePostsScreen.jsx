@@ -112,7 +112,10 @@ const handlePublish = async () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={-100}
-          style={{ justifyContent: "center" }}
+          style={{
+            flex: 1,
+            // justifyContent: "center"
+          }}
       >
         <View style={styles.postContainer}>
           {isLoading ? (

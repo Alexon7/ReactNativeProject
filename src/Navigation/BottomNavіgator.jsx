@@ -5,11 +5,21 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CreatePost from "../Screens/CreatePostsScreen";
 import PostsScreen from "../Screens/PostsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../Redux/userSlice';
+import { auth } from '../../config';
 
 
 const BottomTabs = createBottomTabNavigator(); 
 
-const Home = ({ navigation }) => {
+const BottomNavigator = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+	const handleLogOut = () => {
+		auth.signOut();
+		dispatch(logOut());
+  };
+  
     return (
         <BottomTabs.Navigator initialRouteName="Posts" 
         screenOptions={{
@@ -28,7 +38,7 @@ const Home = ({ navigation }) => {
                    headerTitleAlign:"center",
                    headerRightContainerStyle: { paddingRight: 20 },
                    headerRight: () => (
-                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={()=>navigation.navigate('Login')} >
+                    <TouchableOpacity style={ styles.logoutButton } activeOpacity={0.5} onPress={handleLogOut} >
                        <Feather name="log-out" size={24} color="gray" />
                     </TouchableOpacity>)
                 }} name='PostsScreen' component={PostsScreen}/>
@@ -121,4 +131,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Home;
+export default BottomNavigator;

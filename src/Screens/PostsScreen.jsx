@@ -6,34 +6,52 @@ const postImg = require("../Source/View.png");
 const avatar = require("../Source/Ava.png");
 import data from '../Source/posts';
 import { useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from 'react';
+import {
+	collectionGroup,
+	query,
+	orderBy,
+	onSnapshot,
+} from 'firebase/firestore';
+import { db } from '../../config';
+import Item from '../Components/PostItem';
+import User from '../Components/PostUser';
+
 
 const PostsScreen = ({ navigation }) => {
+  const [userPosts, setUserPosts] = useState([]);
   
-  const renderItem = ({ item }) => (
-    <Post
-      key={item.id}
-      img={postImg}
-      text={item.name}
-      msgs={0}
-      location={item.location}
-       navigation={navigation}
-    />
-  );
+  useEffect(() => {
+		const q = query(collectionGroup(db, 'userPosts'), orderBy('time', 'desc'));
+	
+		const unsubscribe = onSnapshot(q, querySnapshot => {
+			const posts = [];
+			querySnapshot.forEach(doc => {
+				const data = doc.data();
+				const id = doc.id;
+				const post = { id, ...data };
+				posts.push(post);
+			});
+			setUserPosts(posts);
+		});
+	
+		return () => unsubscribe();
+	}, []);
+
+  
+  const renderItem = useCallback(
+		({ item }) => <Item item={item} navigation={navigation} />,
+		[]
+	);
   
   return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <FlatList
-        data={data}
+        data={userPosts}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <ProfileElement
-            avatar={avatar}
-            name="Natali Romanova"
-            email="email@example.com"
-          />
-        }
+        ListHeaderComponent={<User />}
       />
     </SafeAreaView>
   );

@@ -54,6 +54,10 @@ const RegistrationScreen = ({ navigation }) => {
         setPassword(text)
   };
 
+    console.log("Login:", login);
+  console.log("Email:", email);
+  console.log("Password:", password);
+
   const registerDB = async ({ email, password, login }) => {
     console.log("Login:", login);
   console.log("Email:", email);
@@ -190,7 +194,9 @@ const RegistrationScreen = ({ navigation }) => {
       console.log(`Login: ${login}, Email: ${email}, Password: ${password}`);
       navigation.navigate('Home');
        resetForm();
-    }
+  }
+  
+
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -277,7 +283,7 @@ const RegistrationScreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.registerButton}
             activeOpacity={0.5}
-            onPress={register}
+            onPress={()=>register({ login, email, password })}
           >
             <Text style={styles.registerButtonText}>Зареєстуватися</Text>
           </TouchableOpacity>

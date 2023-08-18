@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
 
-  const login = async (email, password) => {
+  const login = async ({ email, password }) => {
       const user = await loginDB({ email, password });
     if (user) {
        navigation.navigate('PostsScreen')
@@ -46,7 +46,8 @@ const LoginScreen = ({ navigation }) => {
 		}
 	};
             
-      
+      console.log(password);
+console.log(email);
 
   
   
@@ -107,15 +108,16 @@ const LoginScreen = ({ navigation }) => {
 
             placeholder="Адреса електронної пошти"
             inputMode="email"
-            value={email}
-            onChangeText={handleMail}
+                value={email}
+                onChangeText={handleMail}
             onFocus={() => {
                   setIsFocused("Email");
                 }}
                 onBlur={() => {
                   setIsFocused("");
                 }}
-          />
+              />
+             
           <TextInput
             style={[
     styles.inputText,
@@ -130,7 +132,8 @@ const LoginScreen = ({ navigation }) => {
                   onBlur={() => {
                     setIsFocused("");
                   }}
-          />
+              />
+              
           <TouchableOpacity
             style={styles.showPassword}
             activeOpacity={0.5}
@@ -145,7 +148,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.loginButton}
             activeOpacity={0.5}
-            onPress={login}
+            onPress={()=>login({ email, password })}
           >
                 <Text style={styles.loginButtonText} onPress={() => { login() }}>Увійти</Text>
           </TouchableOpacity>
@@ -166,6 +169,7 @@ const LoginScreen = ({ navigation }) => {
       </TouchableWithoutFeedback>
     );
 };
+
 
 const styles = StyleSheet.create({
    maincontainer: {

@@ -9,12 +9,21 @@ import {
 	Pressable,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { data } from '../Source/posts';
+// import { data } from '../Source/posts';
+import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+import { db, auth } from '../../config';
+import { nanoid } from '@reduxjs/toolkit';
+
 const postImg = require("../Source/View.png");
 
 const CommentsScreen = ({ route }) => {
 	const [comment, setComment] = useState('');
-	 const [comments, setComments] = useState([]);
+	const [comments, setComments] = useState([]);
+	const img = route.params.img;
+	const postId = route.params.postId;
+	const postCreatedBy = route.params.postCreatedBy;
+	const currentUser = auth.currentUser.uid;
+
   const options = {
     year: "numeric",
     month: "long",
@@ -24,17 +33,67 @@ const CommentsScreen = ({ route }) => {
   };
   const currentTime = new Date().toLocaleString("uk-UA", options);
 
-	
+	useEffect(() => {
+		getCommentsFromStore();
+	}, []);
 	   
-	const handleComment = () => {
+	const handleComment = async() => {
 		if (!comment) {
 			return;
 		}
-
-		console.log(comment);
+		await getCommentsFromStore();
+		await getCommentsFromStore();	
 
 		setComment('');
 	};
+
+	const setCommentToStore = async () => {
+		const postRef = doc(db, 'posts', postCreatedBy, 'userPosts', postId);
+
+		const newComment = {
+			id: nanoid(),
+			createdBy: currentUser,
+			text: comment,
+			createdAt: Date.now(),
+		};
+				try {
+			await updateDoc(postRef, {
+				comments: arrayUnion(newComment),
+			});
+		} catch (error) {
+			console.log(error);
+			throw error;
+		}
+		
+	};
+
+	const getCommentsFromStore = async () => {
+		const postRef = doc(db, 'posts', postCreatedBy, 'userPosts', postId);
+		const postSnap = await getDoc(postRef);
+
+		if (postSnap.exists()) {
+			const commentsWithAvatars = await Promise.all(
+				postSnap.data().comments.map(async comment => {
+					const avatarUrl = await getAvatarUrl(comment.createdBy);
+					return {
+						...comment,
+						avatar: avatarUrl,
+					};
+				})
+			);
+			setComments(commentsWithAvatars);
+		} else {
+			console.log('No such document!');
+		}
+	};
+
+	const getAvatarUrl = async userId => {
+		const userRef = doc(db, 'users', userId);
+		const userSnap = await getDoc(userRef);
+		return userSnap.exists() ? userSnap.data().userAvatar : '';
+	};
+
+
 	return (<View style={styles.container}>
 			<View style={styles.imageContainer}>
 			<Image source={postImg} style={styles.postImg} />
@@ -48,7 +107,7 @@ const CommentsScreen = ({ route }) => {
 							<View style={styles.userImgContainer}></View>
 							<View style={styles.commentTextContainer}>
 								<Text style={styles.commentText}>Коментар</Text>
-								<Text style={styles.commentDate}>{ currentTime}</Text>
+								<Text style={styles.commentDate}>{currentTime}</Text>
 							</View>
 						</View>
 					)}

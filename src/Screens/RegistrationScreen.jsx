@@ -54,15 +54,9 @@ const RegistrationScreen = ({ navigation }) => {
         setPassword(text)
   };
 
-    console.log("Login:", login);
-  console.log("Email:", email);
-  console.log("Password:", password);
-
+   
   const registerDB = async ({ email, password, login }) => {
-    console.log("Login:", login);
-  console.log("Email:", email);
-  console.log("Password:", password);
-				try {
+  				try {
 			await createUserWithEmailAndPassword(auth, email, password);
 			if (auth.currentUser.uid && image) {
 				await uploadImage(image, login);
@@ -192,7 +186,7 @@ const RegistrationScreen = ({ navigation }) => {
     //   }
       registerDB({login, email, password});
       console.log(`Login: ${login}, Email: ${email}, Password: ${password}`);
-      navigation.navigate('Home');
+      navigation.navigate('ProfileScreen');
        resetForm();
   }
   

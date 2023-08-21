@@ -7,6 +7,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { Button } from '../Components/Button';
 import { MaterialIcons,Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc } from 'firebase/firestore';
+import { storage, auth, db } from '../../config';
+
 
 const trashImg = require('../Source/trash.png');
 
@@ -55,41 +59,82 @@ useEffect(() => {
 
   const editPicture = () => setUri(null);
 
+  const uploadImage = async () => {
+		setIsLoading(true);
+		const response = await fetch(uri);
+		const blob = await response.blob();
+		const id = blob._data.name;
+    const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/id`);
+   		const uploadTask = uploadBytesResumable(storageRef, blob);
+
+		uploadTask.on(
+			'state_changed',
+			snapshot => {
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			},
+			error => {
+				switch (error.code) {
+					case 'storage/unauthorized':
+						console.log("User doesn't have permission to access the object");
+						break;
+					case 'storage/canceled':
+						console.log('User canceled the upload');
+						break;
+					case 'storage/unknown':
+						console.log('Unknown error occurred, inspect error.serverResponse');
+						break;
+				}
+			},
+			async () => {
+				const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+				savePost(downloadURL);
+			}
+		);
+	};
+
+  const savePost = async downloadURL => {
+		const coords = await getLocationCoords();
+		const userPost = {
+			createdBy: auth.currentUser.uid,
+			name,
+			location: { title: location, coords: coords },
+			comments: [],
+			likes: 0,
+			imageUri: downloadURL,
+			time: Date.now(),
+		};
+
+		try {
+			await addDoc(
+				collection(db, 'posts', auth.currentUser.uid, 'userPosts'),
+				userPost
+			);
+			setIsLoading(false);
+			navigation.navigate('PostsScreen');
+		} catch (error) {
+			console.log(error);
+			setIsLoading(false);
+			throw error;
+		}
+  };
   
-    const createPost = async () => {
+   const getLocationCoords = async () => {
 		if (hasLocationPermission) {
 			let loc = await Location.getCurrentPositionAsync({});
 			const coords = {
 				latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      };
-      console.log(coords);
-			return {
-				uri,
-				name,
-				location: { title: location, coords },
-				comments: [],
-				likes: 0,
+				longitude: loc.coords.longitude,
 			};
+			return coords;
 		} else {
-			return {
-				uri,
-				name,
-				location: { title: location, coords: 'No information' },
-				comments: [],
-        likes: 0,
-        			};
-      }
-     
-  };
+			return 'No information';
+		}
+	};
   
 
 const handlePublish = async () => {
-  const post = await createPost();
-   				navigation.navigate('PostsScreen',{uri, name, location });
-		setUri(null);
-		setName('');
-		setLocation('');
+		await uploadImage();
 	};
   
   const reset = () => {

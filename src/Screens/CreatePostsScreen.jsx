@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, ActivityIndicator,Pressable, TextInput, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator,Pressable, TextInput,  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image} from "react-native";
 import { useEffect, useState, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import * as Location from "expo-location";
@@ -49,8 +49,8 @@ useEffect(() => {
 			setIsLoading(true);
 			try {
 				const data = await cameraRef.current.takePictureAsync();
-				setUri(data.uri);
-			} catch (error) {
+        setUri(data.uri);
+       			} catch (error) {
 				console.log(error);
 			}
 			setIsLoading(false);
@@ -65,7 +65,7 @@ useEffect(() => {
 		const blob = await response.blob();
 		const id = blob._data.name;
     const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/id`);
-   		const uploadTask = uploadBytesResumable(storageRef, blob);
+   	const uploadTask = uploadBytesResumable(storageRef, blob);
 
 		uploadTask.on(
 			'state_changed',
@@ -163,10 +163,7 @@ const handlePublish = async () => {
           }}
       >
         <View style={styles.postContainer}>
-          {isLoading ? (
-            <ActivityIndicator style={styles.loader} size="large" />
-          ) : (
-            <Pressable
+          <Pressable
               style={[styles.cameraBtn, uri && styles.opacity]}
               onPress={!uri ? takePicture : editPicture}
             >
@@ -176,9 +173,7 @@ const handlePublish = async () => {
                 color={!uri ? '#BDBDBD' : '#FFFFFF'}
               />
             </Pressable>
-          )}
-          
-          {uri ? (
+            {uri ? (
             <Image source={{ uri: uri }} style={styles.camera} />
           ) : (
             <Camera type={type} ref={cameraRef} style={styles.camera} />

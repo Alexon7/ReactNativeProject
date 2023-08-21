@@ -16,7 +16,7 @@ import React, { useState, useSelector } from "react";
 import { useDispatch } from "react-redux";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config';
-import { logIn } from '../../Redux/userSlice';
+import { logIn } from '../Redux/userSlice';
 
 const backImage = require("../Source/Photo_BG.png");
 

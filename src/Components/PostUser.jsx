@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../Redux/selectors';
+import { selectUser } from '../Redux/selectors';
 
 const User = () => {
 	const user = useSelector(selectUser);

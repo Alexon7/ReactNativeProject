@@ -4,10 +4,10 @@ import { useCallback, useEffect } from 'react';
 import User from '../Components/ProfileUser';
 import Item from '../Components/ProfileItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserPosts } from '../../Redux/selectors';
+import { selectUserPosts } from '../Redux/selectors';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { auth, db } from '../../config';
-import { setPosts } from '../../Redux/userSlice';
+import { setPosts } from '../Redux/userSlice';
 const backImage = require('../Source/Photo_BG.png');
 
 

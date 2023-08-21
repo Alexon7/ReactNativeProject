@@ -20,7 +20,7 @@ import { auth, db, storage } from '../../config';
 import { setDoc, doc } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { logIn } from '../../Redux/userSlice';
+import { logIn } from '../Redux/userSlice';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const backImage = require("../Source/Photo_BG.png");
@@ -186,7 +186,7 @@ const RegistrationScreen = ({ navigation }) => {
     //   }
       registerDB({login, email, password});
       console.log(`Login: ${login}, Email: ${email}, Password: ${password}`);
-      navigation.navigate('ProfileScreen');
+      navigation.navigate("Login");
        resetForm();
   }
   

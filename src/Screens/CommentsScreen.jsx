@@ -41,7 +41,7 @@ const CommentsScreen = ({ route }) => {
 		if (!comment) {
 			return;
 		}
-		await getCommentsFromStore();
+		await setCommentToStore();
 		await getCommentsFromStore();	
 
 		setComment('');
@@ -96,17 +96,24 @@ const CommentsScreen = ({ route }) => {
 
 	return (<View style={styles.container}>
 			<View style={styles.imageContainer}>
-			<Image source={postImg} style={styles.postImg} />
+			<Image source={{ uri: img }} style={styles.postImg} />
 			</View>
 
 			<View style={styles.listContainer}>
 				<FlatList
-					data={comment}
-					renderItem={({ data }) => (
-						<View style={styles.commentContainer}>
-							<View style={styles.userImgContainer}></View>
+				data={comment}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => (
+						<View style={[
+									styles.commentContainer,
+									currentUser === item.createdBy &&
+										styles.commentContainerReverse,
+								]}>
+						<View style={styles.userImgContainer}>
+							<Image source={{ uri: item.avatar }} style={styles.avatar} />
+							</View>
 							<View style={styles.commentTextContainer}>
-								<Text style={styles.commentText}>Коментар</Text>
+								<Text style={styles.commentText}>{item.text}</Text>
 								<Text style={styles.commentDate}>{currentTime}</Text>
 							</View>
 						</View>
@@ -154,6 +161,9 @@ styles = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 16,
 		marginBottom: 24,
+	},
+	commentContainerReverse: {
+		flexDirection: 'row-reverse',
 	},
 	userImgContainer: {
 		width: 28,
@@ -212,6 +222,9 @@ styles = StyleSheet.create({
 	},
 	iconComment: {
 		color: '#FFFFFF',
+	},
+	avatar: {
+		flex: 1,
 	},
 });
 

@@ -6,7 +6,7 @@ import CreatePost from "../Screens/CreatePostsScreen";
 import PostsScreen from "../Screens/PostsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import { useDispatch } from 'react-redux';
-import { logOut } from '../../Redux/userSlice';
+import { logOut } from '../Redux/userSlice';
 import { auth } from '../../config';
 
 

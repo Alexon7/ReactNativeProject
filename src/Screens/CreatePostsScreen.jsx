@@ -7,7 +7,14 @@ import { useIsFocused } from '@react-navigation/native';
 import { Button } from '../Components/Button';
 import { MaterialIcons,Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+// import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
 import { collection, addDoc } from 'firebase/firestore';
 import { storage, auth, db } from '../../config';
 
@@ -17,119 +24,147 @@ const trashImg = require('../Source/trash.png');
 const BottomTabs = createBottomTabNavigator();
 
 const CreatePost = ({ navigation }) => {
- const [location, setLocation] = useState('');
-	const [uri, setUri] = useState(null);
-	const [name, setName] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [hasPermission, setHasPermission] = useState(null);
-	const [hasLocationPermission, setHasLocationPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back); 
- 	const cameraRef = useRef(null);
+  const [location, setLocation] = useState('');
+  const [uri, setUri] = useState(null);
+  const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [hasLocationPermission, setHasLocationPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [takingPicture, setTakingPicture] = useState(false);
+  const cameraRef = useRef(null);
   const isFocused = useIsFocused();
  
   
 
-useEffect(() => {
-		(async () => {
-			const cameraStatus = await Camera.requestCameraPermissionsAsync();
-			setHasPermission(cameraStatus.status === 'granted');
-			let locationStatus = await Location.requestForegroundPermissionsAsync();
-			setHasLocationPermission(locationStatus.status === 'granted');
-		})();
-	}, []);
+  useEffect(() => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(cameraStatus.status === 'granted');
+      let locationStatus = await Location.requestForegroundPermissionsAsync();
+      setHasLocationPermission(locationStatus.status === 'granted');
+    })();
+  }, []);
 
-	useEffect(() => {
-		if (!isFocused) {
-			reset();
-		}
+  useEffect(() => {
+    if (!isFocused) {
+      reset();
+    }
   });
 
   const takePicture = async () => {
-		if (cameraRef) {
-			setIsLoading(true);
-			try {
-				const data = await cameraRef.current.takePictureAsync();
+    if (cameraRef && !takingPicture) {
+      setTakingPicture(true);
+      try {
+        const data = await cameraRef.current.takePictureAsync();
         setUri(data.uri);
-       			} catch (error) {
-				console.log(error);
-			}
-			setIsLoading(false);
-		}
-	};
+      } catch (error) {
+        console.log('Error taking picture:', error);
+      }
+      setTakingPicture(false);
+    }
+  };
 
   const editPicture = () => setUri(null);
 
-  const uploadImage = async () => {
-		setIsLoading(true);
-		const response = await fetch(uri);
-		const blob = await response.blob();
-		const id = blob._data.name;
-    const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/id`);
-   	const uploadTask = uploadBytesResumable(storageRef, blob);
+  const uploadImage = async (uri, name) => {
+    setIsLoading(true);
+    if (!uri) {
+      return;
+    }
+    try {
+      const res = await fetch(uri);
+      const blob = await res.blob();
+      // const id = blob._data.name;
+      // const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/id`);
+      const imageRef = storageRef(storage, `${name}`); // getting image ref
+      // 'file' comes from the Blob or File API
+      const uploadTask = await uploadBytesResumable(imageRef, blob);
+      return await getDownloadURL(uploadTask.ref);
+    
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      error => {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            console.log("User doesn't have permission to access the object");
+            break;
+          case 'storage/canceled':
+            console.log('User canceled the upload');
+            break;
+          case 'storage/unknown':
+            console.log('Unknown error occurred, inspect error.serverResponse');
+            break;
+        }
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          savePost(downloadURL);
+        } catch (error) {
+          console.log('Error getting download URL:', error);
+        }
+      }
+    );
+  } catch (error) {
+    console.log('Error uploading image:', error);
+    setIsLoading(false);
+  }
 
-		uploadTask.on(
-			'state_changed',
-			snapshot => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-			},
-			error => {
-				switch (error.code) {
-					case 'storage/unauthorized':
-						console.log("User doesn't have permission to access the object");
-						break;
-					case 'storage/canceled':
-						console.log('User canceled the upload');
-						break;
-					case 'storage/unknown':
-						console.log('Unknown error occurred, inspect error.serverResponse');
-						break;
-				}
-			},
-			async () => {
-				const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-				savePost(downloadURL);
-			}
-		);
 	};
 
   const savePost = async downloadURL => {
-		const coords = await getLocationCoords();
-		const userPost = {
-			createdBy: auth.currentUser.uid,
-			name,
-			location: { title: location, coords: coords },
-			comments: [],
-			likes: 0,
-			imageUri: downloadURL,
-			time: Date.now(),
-		};
+    try {
+      const coords = await getLocationCoords();
+      const userPost = {
+        createdBy: auth.currentUser.uid,
+        name,
+        location: { title: location, coords: coords },
+        comments: [],
+        likes: 0,
+        imageUri: downloadURL,
+        time: Date.now(),
+      };
 
-		try {
-			await addDoc(
-				collection(db, 'posts', auth.currentUser.uid, 'userPosts'),
-				userPost
-			);
-			setIsLoading(false);
-			navigation.navigate('PostsScreen');
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-			throw error;
-		}
+      try {
+        await addDoc(
+          collection(db, 'posts', auth.currentUser.uid, 'userPosts'),
+          userPost
+        );
+        setIsLoading(false);
+        navigation.navigate('PostsScreen');
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+        throw error;
+      }
+    } catch (error) {
+      console.log('Error saving post:', error);
+    setIsLoading(false);
+    throw error;
+    }
   };
   
-   const getLocationCoords = async () => {
-		if (hasLocationPermission) {
-			let loc = await Location.getCurrentPositionAsync({});
-			const coords = {
-				latitude: loc.coords.latitude,
-				longitude: loc.coords.longitude,
-			};
-			return coords;
-		} else {
-			return 'No information';
-		}
+  const getLocationCoords = async () => {
+    try {
+      if (hasLocationPermission) {
+        let loc = await Location.getCurrentPositionAsync({});
+        const coords = {
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+        };
+        return coords;
+      } else {
+        return 'No information';
+      }
+    } catch (error) {
+      console.log('Error getting location coordinates:', error);
+    return 'No information';
+    }
 	};
   
 
@@ -166,12 +201,17 @@ const handlePublish = async () => {
           <Pressable
               style={[styles.cameraBtn, uri && styles.opacity]}
               onPress={!uri ? takePicture : editPicture}
+               disabled={takingPicture}
             >
-              <MaterialIcons
-                name="camera-alt"
-                size={24}
-                color={!uri ? '#BDBDBD' : '#FFFFFF'}
-              />
+              {takingPicture ? (
+    <ActivityIndicator size="small" color="#FF6C00" />
+  ) : (
+    <MaterialIcons
+      name="camera-alt"
+      size={24}
+      color={!uri ? "#BDBDBD" : "#FFFFFF"}
+    />
+  )}
             </Pressable>
             {uri ? (
             <Image source={{ uri: uri }} style={styles.camera} />

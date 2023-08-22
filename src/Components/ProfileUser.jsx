@@ -11,7 +11,13 @@ import { Camera } from 'expo-camera';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../Redux/selectors';
 import { addUserAvatar, logOut } from '../Redux/userSlice';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+// import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { storage, auth } from '../../config';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -29,39 +35,56 @@ const User = () => {
 	const handleLogOut = () => {
 		auth.signOut();
 		dispatch(logOut());
-	};
-	const uploadImage = async uri => {
-		const response = await fetch(uri);
-		const blob = await response.blob();
-		const id = blob._data.name;
-		const storageRef = ref(storage, `images/${auth.currentUser.uid}/avatar`);
-		const uploadTask = uploadBytesResumable(storageRef, blob);
+    };
+    
+     const uploadImage = async (imageUri, imageName) => {
+    if (!imageUri) {
+      return;
+    }
+    try {
+      const res = await fetch(imageUri);
+      const blob = await res.blob();
+      const imageRef = storageRef(storage, `${imageName}`); // getting image ref
+      // 'file' comes from the Blob or File API
+      const response = await uploadBytesResumable(imageRef, blob); //uploadBytes() crashed app
+      return await getDownloadURL(response.ref); // getting link
+    } catch (e) {
+      console.log("firebaseFileUpload error: ", e);
+      throw e;
+    }
+  };
+	// const uploadImage = async uri => {
+	// 	const response = await fetch(uri);
+	// 	const blob = await response.blob();
+	// 	const id = blob._data.name;
+	// 	const storageRef = ref(storage, `images/${auth.currentUser.uid}/avatar`);
+	// 	const uploadTask = uploadBytesResumable(storageRef, blob);
 
-		uploadTask.on(
-			'state_changed',
-			snapshot => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-			},
-			error => {
-				switch (error.code) {
-					case 'storage/unauthorized':
-						console.log("User doesn't have permission to access the object");
-						break;
-					case 'storage/canceled':
-						console.log('User canceled the upload');
-						break;
-					case 'storage/unknown':
-						console.log('Unknown error occurred, inspect error.serverResponse');
-						break;
-				}
-			},
-			async () => {
-				const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-				saveUserAvatar(downloadURL);
-			}
-		);
-	};
+	// 	uploadTask.on(
+	// 		'state_changed',
+	// 		snapshot => {
+	// 			const progress =
+	// 				(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+	// 		},
+	// 		error => {
+	// 			switch (error.code) {
+	// 				case 'storage/unauthorized':
+	// 					console.log("User doesn't have permission to access the object");
+	// 					break;
+	// 				case 'storage/canceled':
+	// 					console.log('User canceled the upload');
+	// 					break;
+	// 				case 'storage/unknown':
+	// 					console.log('Unknown error occurred, inspect error.serverResponse');
+	// 					break;
+	// 			}
+	// 		},
+	// 		async () => {
+	// 			const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+	// 			saveUserAvatar(downloadURL);
+	// 		}
+	// 	);
+	// };
 
 	const saveUserAvatar = async downloadURL => {
 		await updateProfile(auth.currentUser, {

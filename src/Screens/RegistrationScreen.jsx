@@ -169,24 +169,24 @@ const RegistrationScreen = ({ navigation }) => {
   };
 
     const register = ({login, email, password}) => {
-      //   if (!login || !email || !password) {
-      //       alert("Please fill in all fields");
-      //       return
-      // }
+        if (!login || !email || !password) {
+            alert("Please fill in all fields");
+            return
+      }
       
-    //    if (!emailPattern.test(email)) {
-    //   alert("Invalid email format");
-    //   return;
-    // }
+       if (!emailPattern.test(email)) {
+      alert("Invalid email format");
+      return;
+    }
 
-    // if (!passwordPattern.test(password)) {
-    //   // alert("Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character");
-    //  alert("Password must contain at least 6 characters");
-    //   return;
-    //   }
+    if (!passwordPattern.test(password)) {
+      // alert("Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character");
+     alert("Password must contain at least 6 characters");
+      return;
+      }
       registerDB({login, email, password});
       console.log(`Login: ${login}, Email: ${email}, Password: ${password}`);
-      navigation.navigate("Login");
+      navigation.navigate('PostsScreen');
        resetForm();
   }
   
@@ -255,7 +255,8 @@ const RegistrationScreen = ({ navigation }) => {
             placeholder="Пароль"
             secureTextEntry={hidePassword}
             value={password}
-            onChangeText={handlePassword}
+                onChangeText={handlePassword}
+                 autoCapitalize="none"
              onFocus={() => {
                     setIsFocused("Password");
                   }}

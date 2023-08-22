@@ -39,6 +39,10 @@ const LoginScreen = ({ navigation }) => {
 
 
   const login = async ({ email, password }) => {
+  if (!email || !password) {
+           return Alert.alert('Будь-ласка заповніть обидва поля пароль та пошту');
+        }
+
       const user = await loginDB({ email, password });
     if (user) {
        navigation.navigate('PostsScreen')
@@ -125,7 +129,8 @@ console.log(email);
             placeholder="Пароль"
             secureTextEntry={hidePassword}
             value={password}
-            onChangeText={handlePassword}
+                onChangeText={handlePassword}
+                 autoCapitalize="none"
              onFocus={() => {
                     setIsFocused("Password");
                   }}

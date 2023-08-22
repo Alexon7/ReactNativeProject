@@ -6,6 +6,7 @@ import CreatePostsScreen from '../Screens/CreatePostsScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import CommentsScreen from '../Screens/CommentsScreen';
 import MapScreen from '../Screens/MapScreen';
+import PostsScreen from '../Screens/PostsScreen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config';
 import { useState, useEffect } from 'react';
@@ -43,7 +44,7 @@ const Navigation = () => {
               />
             </MainStack.Group>
            
-       
+        <MainStack.Screen name='PostsScreen' component={PostsScreen} />
             <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen} />
             <MainStack.Screen name='ProfileScreen' component={ProfileScreen} />
             <MainStack.Screen name='CommentsScreen' component={CommentsScreen} options={{

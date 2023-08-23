@@ -35,17 +35,17 @@ const Navigation = () => {
           <MainStack.Group screenOptions={{ headerShown: false }}>
             <MainStack.Screen name='Login' component={LoginScreen} />
             <MainStack.Screen name='Registratione' component={RegistrationScreen} />
+             <MainStack.Screen name='PostsScreen' component={PostsScreen} />
           </MainStack.Group>
         ) : (
           <>
             <MainStack.Group screenOptions={{ headerShown: false }}>
               <MainStack.Screen
                 name='BottomNavigator' component={BottomNavigator}
-              />
+                />
+                
             </MainStack.Group>
-           
-        <MainStack.Screen name='PostsScreen' component={PostsScreen} />
-            <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen} />
+              <MainStack.Screen name='CreatePostsScreen' component={CreatePostsScreen} />
             <MainStack.Screen name='ProfileScreen' component={ProfileScreen} />
             <MainStack.Screen name='CommentsScreen' component={CommentsScreen} options={{
               title: "Коментарі",

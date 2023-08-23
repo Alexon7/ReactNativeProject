@@ -3,7 +3,8 @@ import {
 	Text,
 	View,
 	Image,
-	Pressable,
+    Pressable,
+    ActivityIndicator
 	} from 'react-native';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
@@ -28,7 +29,8 @@ const User = () => {
 	const cameraRef = useRef(null);
 	const [cameraOn, setCameraOn] = useState(false);
 	const [type, setType] = useState(Camera.Constants.Type.back);
-	const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [takingPicture, setTakingPicture] = useState(false);
 	const user = useSelector(selectUser);
 	const dispatch = useDispatch();
 
@@ -37,54 +39,54 @@ const User = () => {
 		dispatch(logOut());
     };
     
-     const uploadImage = async (imageUri, imageName) => {
-    if (!imageUri) {
+	const uploadImage = async (uri, name) => {
+    if (!uri) {
       return;
-    }
-    try {
-      const res = await fetch(imageUri);
-      const blob = await res.blob();
-      const imageRef = storageRef(storage, `${imageName}`); // getting image ref
-      // 'file' comes from the Blob or File API
-      const response = await uploadBytesResumable(imageRef, blob); //uploadBytes() crashed app
-      return await getDownloadURL(response.ref); // getting link
-    } catch (e) {
-      console.log("firebaseFileUpload error: ", e);
+        }
+         try {
+		const response = await fetch(uri);
+		const blob = await response.blob();
+		const id = blob._data.name;
+		const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/avatar`);
+		const uploadTask = uploadBytesResumable(imageRef, blob);
+    // return await getDownloadURL(uploadTask.ref)
+
+		uploadTask.on(
+			'state_changed',
+			snapshot => {
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			},
+			error => {
+				switch (error.code) {
+					case 'storage/unauthorized':
+						console.log("User doesn't have permission to access the object");
+						break;
+					case 'storage/canceled':
+						console.log('User canceled the upload');
+						break;
+					case 'storage/unknown':
+						console.log('Unknown error occurred, inspect error.serverResponse');
+						break;
+				}
+			},
+            async () => {
+                 try {
+				const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                     saveUserAvatar(downloadURL);
+                     } catch (error) {
+          console.log('Error getting download URL:', error);
+        }
+			}
+             );
+
+             } catch (e) {
+             console.log("Error uploading image: ", e);
+             setIsLoading(false);
       throw e;
     }
-  };
-	// const uploadImage = async uri => {
-	// 	const response = await fetch(uri);
-	// 	const blob = await response.blob();
-	// 	const id = blob._data.name;
-	// 	const storageRef = ref(storage, `images/${auth.currentUser.uid}/avatar`);
-	// 	const uploadTask = uploadBytesResumable(storageRef, blob);
-
-	// 	uploadTask.on(
-	// 		'state_changed',
-	// 		snapshot => {
-	// 			const progress =
-	// 				(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-	// 		},
-	// 		error => {
-	// 			switch (error.code) {
-	// 				case 'storage/unauthorized':
-	// 					console.log("User doesn't have permission to access the object");
-	// 					break;
-	// 				case 'storage/canceled':
-	// 					console.log('User canceled the upload');
-	// 					break;
-	// 				case 'storage/unknown':
-	// 					console.log('Unknown error occurred, inspect error.serverResponse');
-	// 					break;
-	// 			}
-	// 		},
-	// 		async () => {
-	// 			const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-	// 			saveUserAvatar(downloadURL);
-	// 		}
-	// 	);
-	// };
+             
+	};
 
 	const saveUserAvatar = async downloadURL => {
 		await updateProfile(auth.currentUser, {
@@ -99,15 +101,15 @@ const User = () => {
 		}
 	};
 	const takePicture = async () => {
-		if (cameraRef) {
-			setIsLoading(true);
+		if (cameraRef && !takingPicture) {
+			setTakingPicture(true);
 			try {
 				const data = await cameraRef.current.takePictureAsync();
 				uploadImage(data.uri);
 			} catch (error) {
 				console.log(error);
 			}
-			setIsLoading(false);
+			setTakingPicture(false);
 		}
 	};
 	const cameraTurnOn = async () => {
@@ -140,8 +142,12 @@ const User = () => {
 						<Pressable
 							onPress={!cameraOn ? cameraTurnOn : takePicture}
 							style={styles.addBtnWrapper}
-													>
-							<AntDesign name="plus" size={18} color="#FF6C00" />
+                            disabled={takingPicture}	>
+                            {takingPicture ? (
+                                <ActivityIndicator size="small" color="#FF6C00" />
+                            ) : (
+                                <AntDesign name="plus" size={18} color="#FF6C00" />
+                            )}
 						</Pressable>
 					) : (
 						<Pressable

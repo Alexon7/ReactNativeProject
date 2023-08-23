@@ -12,6 +12,7 @@ import Item from '../Components/PostItem';
 import User from '../Components/PostUser';
 
 
+
 const PostsScreen = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
   
@@ -34,12 +35,12 @@ const PostsScreen = ({ navigation }) => {
 
   
   const renderItem = useCallback(
-		({ item }) => <Item item={item} navigation={navigation} />,
+	  ({ item }) => <Item item={item} navigation={navigation} />,
 		[]
 	);
   
   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16 }}>
       <FlatList
         data={userPosts}
         renderItem={renderItem}

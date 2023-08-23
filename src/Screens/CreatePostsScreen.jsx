@@ -75,12 +75,13 @@ const CreatePost = ({ navigation }) => {
     try {
       const res = await fetch(uri);
       const blob = await res.blob();
-      // const id = blob._data.name;
+      const id = blob._data.name;
       // const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/id`);
-      const imageRef = storageRef(storage, `${name}`); // getting image ref
+      const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/posts/id`); // getting image ref
       // 'file' comes from the Blob or File API
       const uploadTask = await uploadBytesResumable(imageRef, blob);
-      return await getDownloadURL(uploadTask.ref);
+      // return await getDownloadURL(uploadTask.ref);
+    
     
     uploadTask.on(
       'state_changed',
@@ -169,7 +170,8 @@ const CreatePost = ({ navigation }) => {
   
 
 const handlePublish = async () => {
-		await uploadImage();
+  await uploadImage();
+  navigation.navigate('PostsScreen');
 	};
   
   const reset = () => {

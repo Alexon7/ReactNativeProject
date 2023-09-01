@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, ActivityIndicator,Pressable, TextInput,  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image} from "react-native";
+import { View, Text, StyleSheet,ActivityIndicator,Pressable, TextInput,  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image} from "react-native";
 import { useEffect, useState, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import * as Location from "expo-location";
@@ -10,13 +10,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import {
   getStorage,
-  ref as storageRef,
+    ref as storageRef,
+  uploadBytes,
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-
 import { collection, addDoc } from 'firebase/firestore';
 import { storage, auth, db } from '../../config';
+
+
 
 
 const trashImg = require('../Source/trash.png');
@@ -57,6 +59,7 @@ const CreatePost = ({ navigation }) => {
       setTakingPicture(true);
       try {
         const data = await cameraRef.current.takePictureAsync();
+         console.log('Image data:', data);
         setUri(data.uri);
       } catch (error) {
         console.log('Error taking picture:', error);
@@ -67,57 +70,51 @@ const CreatePost = ({ navigation }) => {
 
   const editPicture = () => setUri(null);
 
+    
+  // const uploadImage = async (uri) => {
+  //   setIsLoading(true);
+    
+  //   console.log('uri', uri);
+
+  // try {
+  //   const response = await fetch(uri);
+  //   const blob = await response.blob();
+  //   const id = `${auth.currentUser.uid}_${Date.now()}_${name || 'image'}`;
+  //   const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/${id}`);
+    
+  //   await uploadBytesResumable(storageRef, blob);
+
+  //   const downloadURL = await getDownloadURL(storageRef);
+  //   savePost(downloadURL);
+
+  //   setIsLoading(false);
+  // } catch (error) {
+  //   console.log('Error uploading image:', error);
+  //   setIsLoading(false);
+  //   }
+     
+  // };
+
   const uploadImage = async (uri, name) => {
-    setIsLoading(true);
-    if (!uri) {
-      return;
+     console.log('uri',uri)
+  if (!uri) {
+    return;
     }
-    try {
-      const res = await fetch(uri);
-      const blob = await res.blob();
-      const id = blob._data.name;
-      // const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/id`);
-      const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/posts/id`); // getting image ref
-      // 'file' comes from the Blob or File API
-      const uploadTask = await uploadBytesResumable(imageRef, blob);
-      // return await getDownloadURL(uploadTask.ref);
-    
-    
-    uploadTask.on(
-      'state_changed',
-      snapshot => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      },
-      error => {
-        switch (error.code) {
-          case 'storage/unauthorized':
-            console.log("User doesn't have permission to access the object");
-            break;
-          case 'storage/canceled':
-            console.log('User canceled the upload');
-            break;
-          case 'storage/unknown':
-            console.log('Unknown error occurred, inspect error.serverResponse');
-            break;
-        }
-      },
-      async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          savePost(downloadURL);
-        } catch (error) {
-          console.log('Error getting download URL:', error);
-        }
-      }
-    );
-  } catch (error) {
-    console.log('Error uploading image:', error);
-    setIsLoading(false);
+
+     try {
+    const res = await fetch(uri);
+    const blob = await res.blob();
+    const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/posts/${id}`); // getting image ref
+    // 'file' comes from the Blob or File API
+    const response = await uploadBytesResumable(imageRef, blob); //uploadBytes() crashed app
+    return await getDownloadURL(response.ref); // getting link
+  } catch (e) {
+    console.log("firebaseFileUpload error: ", e);
+    throw e;
   }
-
-	};
-
+};
+  
+  
   const savePost = async downloadURL => {
     try {
       const coords = await getLocationCoords();
@@ -169,8 +166,10 @@ const CreatePost = ({ navigation }) => {
 	};
   
 
-const handlePublish = async () => {
-  await uploadImage();
+  const handlePublish = async () => {
+   console.log('Publishing image...');
+    await uploadImage();
+     console.log('Image published successfully');
   navigation.navigate('PostsScreen');
 	};
   

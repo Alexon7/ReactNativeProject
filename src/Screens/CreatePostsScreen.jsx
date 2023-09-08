@@ -60,7 +60,7 @@ const CreatePost = ({ navigation }) => {
       try {
         const data = await cameraRef.current.takePictureAsync();
          console.log('Image data:', data);
-        setUri(data.uri);
+      setUri(data.uri);
       } catch (error) {
         console.log('Error taking picture:', error);
       }
@@ -106,8 +106,11 @@ const CreatePost = ({ navigation }) => {
     const blob = await res.blob();
     const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/posts/${id}`); // getting image ref
     // 'file' comes from the Blob or File API
-    const response = await uploadBytesResumable(imageRef, blob); //uploadBytes() crashed app
-    return await getDownloadURL(response.ref); // getting link
+       const response = await uploadBytesResumable(imageRef, blob);   //uploadBytes() crashed app
+    async ()=> {
+      const downloadURL = await getDownloadURL(response.ref);
+      return savePost(downloadURL);
+       } // getting link
   } catch (e) {
     console.log("firebaseFileUpload error: ", e);
     throw e;

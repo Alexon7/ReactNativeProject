@@ -6,18 +6,18 @@ import { data } from '../Source/posts';
 
 
 const MapScreen = ({ route }) => {
-	// const { longitude, latitude } = route.params.location;
-	// const coords = route.params.coords;
+	const coords = route.params.coords;
+	const name = route.params.name;
 	
-	// console.log(longitude);
-	// console.log(latitude);
+	// console.log(coords);
+	// console.log(coords);
 	return (
 		<View style={styles.container}>
 			<MapView
 				style={styles.mapStyle}
 				region={{
-				// 	latitude: coords.latitude,
-				// 	longitude: coords.longitude,
+					latitude: coords.latitude,
+					longitude: coords.longitude,
 					latitudeDelta: 1,
 					longitudeDelta: 1,
 				}}
@@ -25,16 +25,12 @@ const MapScreen = ({ route }) => {
 				maxZoomLevel={10}
 			>
 				<Marker
-					title="You here"
+					title={name}
 					coordinate={{
-						latitude: 47.097133,
-                        longitude: 37.543367}}
-					
-					// coordinate={{
-					// 	latitude: coords.latitude,
-					// 	longitude: coords.longitude,
-					// }}
-				/>
+						latitude: coords.latitude,
+						longitude: coords.longitude,
+					}}
+						/>
 			</MapView>
 		</View>
 	);

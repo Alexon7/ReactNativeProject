@@ -23,6 +23,7 @@ import { storage, auth } from '../../config';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../config';
+import * as MediaLibrary from 'expo-media-library';
 
 const User = () => {
 	const [hasPermission, setHasPermission] = useState(null);
@@ -37,15 +38,40 @@ const User = () => {
 	const handleLogOut = () => {
 		auth.signOut();
 		dispatch(logOut());
-    };
+	};
+	
+	 function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        // If successful -> return with blob
+        xhr.onload = function () {
+            resolve(xhr.response);
+        };
+        // reject on error
+        xhr.onerror = function () {
+            reject(new Error("uriToBlob failed"));
+        };
+        // Set the response type to ‘blob’ - this means the server’s response
+        // will be accessed as a binary object
+        xhr.responseType = "blob";
+        // Initialize the request. The third argument set to ‘true’ denotes
+        // that the request is asynchronous
+        xhr.open("GET", uri, true);
+        // Send the request. The ‘null’ argument means that no body content is given for the request
+        xhr.send(null);
+    });
+}
     
-	const uploadImage = async (uri, name) => {
-    if (!uri) {
+	const uploadImage = async (imageUri) => {
+    if (!imageUri) {
       return;
         }
          try {
-		const response = await fetch(uri);
-		const blob = await response.blob();
+		// const response = await fetch(uri);
+			 // const blob = await response.blob();
+			 const asset = await MediaLibrary.createAssetAsync(imageUri);
+            const imaUri = asset?.uri;
+            const blob = await uriToBlob(imaUri);
 		const id = blob._data.name;
 		const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/avatar`);
 		const uploadTask = uploadBytesResumable(imageRef, blob);

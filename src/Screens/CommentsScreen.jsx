@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import {
 	FlatList,
 	StyleSheet,
@@ -49,7 +49,7 @@ const CommentsScreen = ({ route }) => {
 
 	const setCommentToStore = async () => {
 		const postRef = doc(db, 'posts', postCreatedBy, 'userPosts', postId);
-
+console.log('Link', postRef);
 		const newComment = {
 			id: nanoid(),
 			createdBy: currentUser,
@@ -60,6 +60,7 @@ const CommentsScreen = ({ route }) => {
 			await updateDoc(postRef, {
 				comments: arrayUnion(newComment),
 			});
+					console.log(newComment)
 		} catch (error) {
 			console.log(error);
 			throw error;
@@ -70,6 +71,7 @@ const CommentsScreen = ({ route }) => {
 	const getCommentsFromStore = async () => {
 		const postRef = doc(db, 'posts', postCreatedBy, 'userPosts', postId);
 		const postSnap = await getDoc(postRef);
+		console.log("Повертає",postSnap);
 
 		if (postSnap.exists()) {
 			const commentsWithAvatars = await Promise.all(
@@ -101,7 +103,7 @@ const CommentsScreen = ({ route }) => {
 
 			<View style={styles.listContainer}>
 				<FlatList
-				data={comment}
+				data={comments}
 				keyExtractor={item => item.id}
 				renderItem={({ item }) => (
 						<View style={[

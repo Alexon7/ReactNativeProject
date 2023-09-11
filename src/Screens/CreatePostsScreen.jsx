@@ -1,4 +1,3 @@
-
 import { View, Text, StyleSheet,ActivityIndicator,Pressable, TextInput,  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image} from "react-native";
 import { useEffect, useState, useRef } from 'react';
 import { Camera } from 'expo-camera';
@@ -7,16 +6,14 @@ import { useIsFocused } from '@react-navigation/native';
 import { Button } from '../Components/Button';
 import { MaterialIcons,Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import {
-  getStorage,
-    ref as storageRef,
+      ref as storageRef,
   uploadBytes,
-  uploadBytesResumable,
-  getDownloadURL,
+   getDownloadURL,
 } from "firebase/storage";
 import { collection, addDoc } from 'firebase/firestore';
 import { storage, auth, db } from '../../config';
+import * as MediaLibrary from 'expo-media-library';
 
 
 
@@ -37,11 +34,20 @@ const CreatePost = ({ navigation }) => {
   const cameraRef = useRef(null);
   const isFocused = useIsFocused();
  
-  
+  const requestMediaLibraryPermission = async () => {
+  const { status } = await MediaLibrary.getPermissionsAsync();
+  if (status === 'granted') {
+    return true;
+  } else {
+    const { status: newStatus } = await MediaLibrary.requestPermissionsAsync();
+    return newStatus === 'granted';
+  }
+};
 
   useEffect(() => {
     (async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
       setHasPermission(cameraStatus.status === 'granted');
       let locationStatus = await Location.requestForegroundPermissionsAsync();
       setHasLocationPermission(locationStatus.status === 'granted');
@@ -59,8 +65,18 @@ const CreatePost = ({ navigation }) => {
       setTakingPicture(true);
       try {
         const data = await cameraRef.current.takePictureAsync();
-         console.log('Image data:', data);
-      setUri(data.uri);
+        console.log('Image data:', data);
+
+        const hasMediaLibraryPermission = await requestMediaLibraryPermission();
+
+        if (!hasMediaLibraryPermission) {
+          console.log('Не надано доступ до бібліотеки');
+          return;
+        }
+        
+        const asset = await MediaLibrary.createAssetAsync(data.uri);
+          
+      setUri(asset.uri);
       } catch (error) {
         console.log('Error taking picture:', error);
       }
@@ -70,52 +86,50 @@ const CreatePost = ({ navigation }) => {
 
   const editPicture = () => setUri(null);
 
+  function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        // If successful -> return with blob
+        xhr.onload = function () {
+            resolve(xhr.response);
+        };
+        // reject on error
+        xhr.onerror = function () {
+            reject(new Error("uriToBlob failed"));
+        };
+        // Set the response type to ‘blob’ - this means the server’s response
+        // will be accessed as a binary object
+        xhr.responseType = "blob";
+        // Initialize the request. The third argument set to ‘true’ denotes
+        // that the request is asynchronous
+        xhr.open("GET", uri, true);
+        // Send the request. The ‘null’ argument means that no body content is given for the request
+        xhr.send(null);
+    });
+}
     
-  // const uploadImage = async (uri) => {
-  //   setIsLoading(true);
-    
-  //   console.log('uri', uri);
-
-  // try {
-  //   const response = await fetch(uri);
-  //   const blob = await response.blob();
-  //   const id = `${auth.currentUser.uid}_${Date.now()}_${name || 'image'}`;
-  //   const storageRef = ref(storage, `images/${auth.currentUser.uid}/posts/${id}`);
-    
-  //   await uploadBytesResumable(storageRef, blob);
-
-  //   const downloadURL = await getDownloadURL(storageRef);
-  //   savePost(downloadURL);
-
-  //   setIsLoading(false);
-  // } catch (error) {
-  //   console.log('Error uploading image:', error);
-  //   setIsLoading(false);
-  //   }
-     
-  // };
-
-  const uploadImage = async (uri, name) => {
-     console.log('uri',uri)
-  if (!uri) {
-    return;
-    }
-
-     try {
-    const res = await fetch(uri);
-    const blob = await res.blob();
-    const imageRef = storageRef(storage, `images/${auth.currentUser.uid}/posts/${id}`); // getting image ref
-    // 'file' comes from the Blob or File API
-       const response = await uploadBytesResumable(imageRef, blob);   //uploadBytes() crashed app
-    async ()=> {
-      const downloadURL = await getDownloadURL(response.ref);
-      return savePost(downloadURL);
-       } // getting link
-  } catch (e) {
-    console.log("firebaseFileUpload error: ", e);
-    throw e;
-  }
-};
+  const uploadImage = async (imageUri) => {
+        if (!imageUri) {
+            return;
+        }
+        try {
+            const asset = await MediaLibrary.createAssetAsync(imageUri);
+            const imaUri = asset?.uri;
+            const blob = await uriToBlob(imaUri);
+            const imageRef = storageRef(
+                storage,
+                new Date().toISOString() + asset.filename
+            ); // getting image ref
+             // ‘file’ comes from the Blob or File API
+            const response = await uploadBytes(imageRef, blob); //uploadBytes() crashed app
+            console.log({ response });
+          // return await getDownloadURL(response.ref); // getting link
+          const downloadURL = await getDownloadURL(response.ref);
+          savePost(downloadURL);
+        } catch (error) {
+            console.log('Ошибка при загрузке изображения:',error);
+                   }
+    };
   
   
   const savePost = async downloadURL => {
@@ -171,7 +185,7 @@ const CreatePost = ({ navigation }) => {
 
   const handlePublish = async () => {
    console.log('Publishing image...');
-    await uploadImage();
+    await uploadImage(uri);
      console.log('Image published successfully');
   navigation.navigate('PostsScreen');
 	};
